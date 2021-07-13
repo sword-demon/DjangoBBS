@@ -1,0 +1,39 @@
+{% extends 'layout/app.html' %}
+
+{% block title %}
+    编辑个人资料
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/users/side_bar.css">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="tab">
+                <a href="{% url 'edit_profile' request.user.id %}" class="item active">
+                    <i class="fa fa-user-circle"></i>
+                    &nbsp;基本资料
+                </a>
+                <a href="{% url 'edit_avatar' %}" class="item">
+                    <i class="fa fa-image"></i>
+                    &nbsp;修改头像
+                </a>
+                <a href="" class="item">
+                    <i class="fa fa-mobile"></i>
+                    &nbsp;绑定手机
+                </a>
+                <a href="" class="item">
+                    <i class="fa fa-lock"></i>
+                    &nbsp;修改密码
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            {% block user_center_content %}
+
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'users/user_center_layout.html' %}
+
+{% block user_center_content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <i class="fa fa-edit"></i>
+                修改资料
+            </h4>
+            <hr>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form action="">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">用户名</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="username" class="form-control" readonly disabled
+                                           value="{{ request.user.username }}">
+                                </div>
+                                <div class="col-sm-3 align-self-center">
+                                    用户名不可修改
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">昵称</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="nickname" class="form-control"
+                                           value="{% if request.user.nickname %}{{ request.user.nickname }}{% endif %}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">性别</label>
+                                <div class="col-sm-7">
+                                    <select name="sex" id="sex" class="form-control">
+                                        <option value="1">男</option>
+                                        <option value="0">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">Github</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="github" class="form-control" autocomplete="off"
+                                           value="{% if request.user.github %}{{ request.user.github }}{% endif %}">
+                                </div>
+                                <div class="col-sm-3 align-self-center">
+                                    请跟GitHub的地址保持一致
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">邮箱</label>
+                                <div class="col-sm-7">
+                                    <input type="email" name="email" class="form-control"
+                                           value="{{ request.user.email }}">
+                                </div>
+                                <div class="col-sm-3 align-self-center">
+                                    如: name@website.com
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">姓</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="first_name" class="form-control"
+                                           value="
+                                                   {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">名</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="last_name" class="form-control"
+                                           value="
+                                                   {% if request.user.last_name %}{{ request.user.last_name }}{% endif %}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">手机号码</label>
+                                <div class="col-sm-7">
+                                    <input type="tel" name="mobile" class="form-control"
+                                           value="{% if request.user.mobile %}{{ request.user.mobile }}{% endif %}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">生日</label>
+                                <div class="col-sm-7">
+                                    <input type="date" name="birthday" class="form-control"
+                                           value="{% if request.user.birthday %}{{ request.user.birthday }}{% endif %}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">个性签名</label>
+                                <div class="col-sm-7">
+                                    <input type="text" name="sign" class="form-control"
+                                           value="{% if request.user.sign %}{{ request.user.sign }}{% endif %}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">个人简介</label>
+                                <div class="col-sm-7">
+                                <textarea name="introduction" id="introduction" cols="51"
+                                          rows="5">{% if request.user.introduction %}
+                                    {{ request.user.introduction }}{% endif %}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-2"></div>
+                                <button type="button" class="btn btn-success">应用修改</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

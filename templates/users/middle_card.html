@@ -12,7 +12,7 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body text-center">
-                个人签名: {{ request.user.sign }}
+                个人签名: {% if request.user.sign %}{{ request.user.sign }}{% else %}暂无{% endif %}
             </div>
         </div>
     </div>

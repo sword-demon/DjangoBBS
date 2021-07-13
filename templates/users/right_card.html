@@ -32,9 +32,9 @@
         </div>
     </div>
     <div class="card-footer text-center">
-        <button class="btn btn-success">
+        <a href="{% url 'edit_profile' request.user.id %}" class="btn btn-success">
             <i class="fa fa-edit"></i>
             编辑个人资料
-        </button>
+        </a>
     </div>
 </div>
