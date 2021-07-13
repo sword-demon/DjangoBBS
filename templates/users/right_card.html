@@ -1,0 +1,40 @@
+<div class="card">
+    <div class="card-body">
+        <div class="img-thumbnail">
+            <a href="" title="点击修改头像">
+                <img style="width: 100%;"
+                        {% load mylabel %}
+                     src="{% if request.user.avatar %}{{ base_url }}{{ request.user.avatar }}{% else %}{{ default_avatar }}{% endif %}"
+                     alt="{{ request.user.username }}">
+            </a>
+        </div>
+        <hr>
+        <div class="box">
+            <div>{{ request.user.username }}</div>
+            {% load mylabel %}
+            <div>{{ request.user.sex|get_sex }}</div>
+        </div>
+        <hr>
+        {% load  mylabel %}
+        {{ request.user.last_login_ip|get_city_name_by_ip }}
+        <hr>
+        <div class="card-body">
+            {% if request.user.github %}
+                <a href="{{ request.user.github }}" class="alert-link" title="Github">
+                    <i class="fa fa-github-alt"></i>
+                </a>
+            {% endif %}
+            {% if request.user.qq %}
+                <a href="{{ request.user.qq }}" class="alert-link" title="Github">
+                    <i class="fa fa-qq"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-footer text-center">
+        <button class="btn btn-success">
+            <i class="fa fa-edit"></i>
+            编辑个人资料
+        </button>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body text-center">
+                {% load mylabel %}
+                注册于: {{ request.user.date_joined }}，活跃于: {{ request.user.last_login|min_nums }}分钟前
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body text-center">
+                个人签名: {{ request.user.sign }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                    <i class="fa fa-book mr-2"></i>
+                    {{ request.user.username }}发布的博文</h4>
+            </div>
+            <div class="card-body">
+                <div class="blog">
+                    <div class="event">
+                        <div class="content">
+                            <div class="summary">
+                                <a href="">jQuery学习笔记</a>
+                            </div>
+                            <div class="meta" style="line-height: 34px;">
+                                <div class="date"
+                                     style="font-size: 13px;margin: 7px 0em 0em;margin-left:0px">
+                                    <a class="" data-tooltip="2019-08-06 22:58:10">创建于 <span
+                                            title="2019-08-06 22:58:10">1年前</span></a>
+                                    <span class="divider">|</span>
+                                    <a>
+                                        阅读数 359
+                                    </a>
+                                    <span class="divider">|</span>
+                                    <a>
+                                        评论数 0
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-meta">
+                            <a class="btn btn-sm"
+                               href="https://learnku.com/articles/32188"><i class="fa fa-thumbs-o-up"></i> 1
+                            </a>
+                            <a class="ui label basic light grey"
+                               href="https://learnku.com/articles/32188"><i class="fa fa-comment"></i> 0
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="event">
+                        <div class="content">
+                            <div class="summary">
+                                <a href="">jQuery学习笔记</a>
+                            </div>
+                            <div class="meta" style="line-height: 34px;">
+                                <div class="date"
+                                     style="font-size: 13px;margin: 7px 0 0 0;">
+                                    <a class="" data-tooltip="2019-08-06 22:58:10">创建于 <span
+                                            title="2019-08-06 22:58:10">1年前</span></a>
+                                    <span class="divider">|</span>
+                                    <a>
+                                        阅读数 359
+                                    </a>
+                                    <span class="divider">|</span>
+                                    <a>
+                                        评论数 0
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-meta">
+                            <a class="btn btn-sm"
+                               href="https://learnku.com/articles/32188"><i class="fa fa-thumbs-o-up"></i> 1
+                            </a>
+                            <a class="ui label basic light grey"
+                               href="https://learnku.com/articles/32188"><i class="fa fa-comment"></i> 0
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

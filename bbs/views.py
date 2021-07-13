@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from bbs.forms.user_form import RegisterForm, LoginForm
 from bbs.models import Users
 from utils.json_response import Show
+from utils.tools import get_ip
 
 
 def index(request):
@@ -19,9 +20,12 @@ def reg(request):
         form = RegisterForm(request.POST)
         is_valid = form.is_valid()
         if is_valid:
+            extra = {
+                "last_login_ip": get_ip(request)
+            }
             try:
                 user = Users.objects.create_user(username=form.cleaned_data.get("username"),
-                                                 password=form.cleaned_data.get("password"))
+                                                 password=form.cleaned_data.get("password"), **extra)
                 if user:
                     return Show.success("注册成功，前去登录!")
                 else:
@@ -63,9 +67,3 @@ def logout(request):
     request.session.flush()
 
     return redirect("login")
-
-
-try:
-    from users.users_view import *
-except ImportError:
-    pass

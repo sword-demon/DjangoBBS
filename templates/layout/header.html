@@ -34,7 +34,7 @@
                                 </a>
                             {% endif %}
 
-                            <a class="dropdown-item" href="">
+                            <a class="dropdown-item" href="{% url 'user_center' id=request.user.id %}">
                                 <i class="fa fa-user-circle-o mr-2"></i>
                                 个人中心
                             </a>

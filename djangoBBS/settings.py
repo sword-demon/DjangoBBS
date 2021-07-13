@@ -63,6 +63,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 配置基础域名地址全局变量
+                'extend.global.base_url.base_url',
+                # 配置默认头像
+                'extend.global.base_url.default_avatar'
             ],
         },
     },

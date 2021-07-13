@@ -7,4 +7,4 @@ from utils.json_response import Show
 
 
 def users(request, id):
-    pass
+    return render(request, 'users/user_center.html')

@@ -21,3 +21,13 @@ DATABASES = {
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 加斜杠
+BASE_URL = '127.0.0.1:8000/'
+
+# 设置默认头像
+DEFAULT_BLANK_AVATAR = ''

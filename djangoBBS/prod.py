@@ -23,3 +23,5 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+BASE_URL = '生产环境的域名地址'
