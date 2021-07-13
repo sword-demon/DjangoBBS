@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {% block title %}
+            BBS论坛
+        {% endblock %}
+        - djangoBBS
+    </title>
+    <meta name="description" content="library"/>
+    <meta name="keyword" content="library system"/>
+    <!-- Styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/app.css" rel="stylesheet">
+    <link href="/static/plugins/layui/css/modules/layer/default/layer.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    {% block css %}
+
+    {% endblock %}
+</head>
+
+<body>
+<div id="app">
+
+    {% include 'layout/header.html' %}
+    <div class="container">
+
+        {% include 'layout/errors.html' %}
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+    {% include 'layout/footer.html' %}
+</div>
+
+<!-- Scripts -->
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/bootstrap.js"></script>
+<script src="/static/plugins/layui/layui.js"></script>
+
+{% block js %}
+
+{% endblock %}
+</body>
+
+</html>

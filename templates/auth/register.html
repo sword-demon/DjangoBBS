@@ -1,0 +1,95 @@
+{% extends 'layout/app.html' %}
+
+{% block title %}
+    注册
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">注册用户</div>
+
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'register' %}">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group row">
+                                    {% load mylabel %}
+                                    {{ field|label_with_classes:"col-md-4 col-form-label text-md-right" }}
+                                    <div class="col-md-6">
+                                        {{ field|widget_with_classes:"form-control" }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="button" class="register btn btn-primary">
+                                        注册
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).on("click", ".register", function () {
+            var csrfmiddlewaretoken = $("[name=csrfmiddlewaretoken]").val().trim();
+            var username = $("[name=username]").val().trim();
+            var password = $("[name=password]").val().trim();
+            var password_confirmation = $("[name=password_confirmation]").val().trim();
+
+            if (username === "") {
+                layer.msg("用户名不能为空");
+                return false;
+            }
+
+            if (password === "") {
+                layer.msg("用户密码不能为空");
+                return false;
+            }
+
+            if (password !== password_confirmation) {
+                layer.msg("两次密码不一样");
+                return false;
+            }
+
+            $.ajax({
+                url: "{% url 'register' %}",
+                data: {
+                    username, csrfmiddlewaretoken, password, password_confirmation
+                },
+                dataType: "json",
+                type: "POST",
+                success: function (res) {
+                    if (res.status) {
+                        layer.msg(res.msg, {
+                            icon: 6
+                        }, function () {
+                            location.href = "{% url 'login' %}";
+                        });
+                    } else {
+                        var str = "";
+                        $.each(res.msg, function (index, item) {
+                            str += "<br>" + item[0]
+                        });
+                        layer.msg(str, {
+                            icon: 5
+                        }, function () {
+                            window.location.reload();
+                        })
+                    }
+                }
+            });
+            return false;
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'layout/app.html' %}
+
+{% block content %}
+    <div class="alert alert-danger">
+    {% if exception %}
+        {{ exception }}
+    {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'layout/app.html' %}
+
+{% block title %}
+    登录
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">登录</div>
+
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+
+                            {% for field in form %}
+                                <div class="form-group row">
+                                    {% load mylabel %}
+                                    {{ field|label_with_classes:"col-md-4 col-form-label text-md-right" }}
+                                    <div class="col-md-6">
+                                        {{ field|widget_with_classes:"form-control" }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="button" class="login btn btn-primary">
+                                        登录
+                                    </button>
+
+                                    <a class="btn btn-link" href="{% url 'register' %}">
+                                        尚未有账号？前去注册
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).on("click", ".login", function () {
+            var csrfmiddlewaretoken = $("[name=csrfmiddlewaretoken]").val().trim();
+            var username = $("[name=username]").val().trim();
+            var password = $("[name=password]").val().trim();
+
+            if (username === "") {
+                layer.msg("用户名不能为空");
+                return false;
+            }
+
+            if (password === "") {
+                layer.msg("用户密码不能为空");
+                return false;
+            }
+
+            $.ajax({
+                url: "{% url 'login' %}",
+                data: {
+                    username, csrfmiddlewaretoken, password
+                },
+                dataType: "json",
+                type: "POST",
+                success: function (res) {
+                    if (res.status) {
+                        layer.msg(res.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function () {
+                            location.href = "{% url 'home' %}";
+                        });
+                    } else {
+                        var result;
+                        if (typeof res.msg == "string") {
+                            result = res.msg;
+                        } else {
+                            var str = "";
+                            $.each(res.msg, function (index, item) {
+                                str += "<br>" + item[0]
+                            });
+                            result = str;
+                        }
+                        layer.msg(result, {
+                            icon: 5,
+                            time: 2000
+                        }, function () {
+                            window.location.reload();
+                        })
+                    }
+                }
+            });
+            return false;
+        });
+    </script>
+{% endblock %}
