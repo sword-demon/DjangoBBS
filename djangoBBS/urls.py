@@ -18,7 +18,7 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 
 from bbs import views
-from djangoBBS import dev
+from djangoBBS import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,5 +32,5 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('bbs/', include('bbs.urls')),
     # media配置
-    re_path(r'media/(?P<path>.*)$', serve, {'document_root': dev.MEDIA_ROOT})
+    re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})
 ]

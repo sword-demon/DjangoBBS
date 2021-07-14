@@ -5,6 +5,9 @@
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
 #   * Remove `` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+import os
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -100,10 +103,17 @@ class Likes(models.Model):
         unique_together = (('user', 'topic'),)
 
 
+def user_directory_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = '{}.{}'.format(uuid.uuid4().hex[:10], ext)
+    # return the whole path to the file
+    return os.path.join(instance.user.id, "avatar", filename)
+
+
 class Users(AbstractUser):
     id = models.AutoField(primary_key=True)
     nickname = models.CharField(max_length=50, blank=True, null=True)
-    avatar = models.CharField(max_length=255)
+    avatar = models.FileField(upload_to=user_directory_path, default="/avatars/avatar.jpg")
     last_login_ip = models.CharField(max_length=64)
     update_time = models.IntegerField(blank=True, null=True)
     sex = models.PositiveIntegerField(default=0)
@@ -136,4 +146,3 @@ class Log(models.Model):
         db_table = 'logs'
         verbose_name = '日志记录表'
         verbose_name_plural = verbose_name
-

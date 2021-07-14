@@ -92,3 +92,8 @@ class UpdatePasswordForm(forms.Form):
             return self.cleaned_data
         else:
             raise ValidationError("两次密码不一致")
+
+
+class UpdateAvatarForm(forms.Form):
+    id = forms.IntegerField(required=True, label='ID', error_messages={"required": "ID参数缺失"})
+    avatar = forms.FileField(max_length=255)

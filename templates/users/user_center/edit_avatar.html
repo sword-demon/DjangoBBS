@@ -15,7 +15,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <form action="">
+                        <form action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ request.user.id }}">
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label text-md-right">请选择图片</label>
                                 <div class="col-sm-7">
@@ -44,6 +46,8 @@
             }
             let formData = new FormData();
             formData.append("avatar", $(obj)[0].files[0]);
+            formData.append("csrfmiddlewaretoken", $("[name='csrfmiddlewaretoken']").val());
+            formData.append("id", $("[name='id']").val());
             $.ajax({
                 type: "POST",
                 url: "",

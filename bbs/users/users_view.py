@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.utils.decorators import method_decorator
 from django.views import View
 
-from bbs.forms.user_form import UpdateUserForm, UpdateUserPhone, UpdatePasswordForm
+from bbs.forms.user_form import UpdateUserForm, UpdateUserPhone, UpdatePasswordForm, UpdateAvatarForm
 from bbs.models import Users
+from djangoBBS import dev, settings
 from utils.decorator import check_login
 from utils.json_response import Show
 
@@ -50,6 +51,18 @@ class UserAvatar(UserCenter):
     @method_decorator(check_login, name='get')
     def get(self, request):
         return render(request, 'users/user_center/edit_avatar.html')
+
+    @method_decorator(check_login, name='post')
+    def post(self, request):
+        user = request.user
+        user_profile = get_object_or_404(Users, user=user)
+        update_avatar_form = UpdateAvatarForm(request.POST, request.FILES)
+        if update_avatar_form.is_valid():
+            avatar = request.FILES.get("avatar")
+            user_profile.avatar = avatar
+            user_profile.save()
+
+        return Show.success("上传成功", data={"path": user_profile.avatar})
 
 
 class UserBindPhone(UserCenter):
