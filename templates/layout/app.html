@@ -44,6 +44,52 @@
 <script src="/static/js/bootstrap.js"></script>
 <script src="/static/plugins/layui/layui.js"></script>
 
+<script>
+    function request(url, option = {}, redirect_uri = "") {
+        $.ajax({
+            url,
+            ...option,
+            success: function (res) {
+                if (res.status === 1) {
+                    layer.msg(res.msg, {
+                        icon: 6
+                    }, function () {
+                        if (redirect_uri !== "") {
+                            window.location.href = redirect_uri;
+                        } else {
+                            window.location.reload();
+                        }
+                    });
+                } else if (res.status === 2) {
+                    layer.msg(res.msg, {icon: 5}, function () {
+                        window.location.href = "{% url 'login' %}";
+                    });
+                } else {
+                    var result;
+                    if (typeof res.msg == "string") {
+                        result = res.msg;
+                    } else {
+                        var str = "";
+                        $.each(res.msg, function (index, item) {
+                            str += "<br>" + item[0]
+                        });
+                        result = str;
+                    }
+                    layer.msg(result, {
+                        icon: 5,
+                        time: 2000
+                    }, function () {
+                        window.location.reload();
+                    });
+                }
+            },
+            error: function () {
+                layer.msg("系统网络异常");
+                return false;
+            },
+        });
+    }
+</script>
 {% block js %}
 
 {% endblock %}

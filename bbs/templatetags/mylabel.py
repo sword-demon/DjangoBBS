@@ -67,5 +67,14 @@ def get_city_name_by_ip(ip):
 
 
 @register.filter()
-def splice_more_str(parameter, args):
-    return parameter + args
+def get_url_name(path):
+    """
+    在模板中获取请求地址的url别名
+    :param path:
+    :return:
+    """
+    from django.urls import resolve
+
+    rm = resolve(path)
+    url_name = rm.url_name
+    return url_name

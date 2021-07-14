@@ -1,0 +1,115 @@
+{% extends 'users/user_center_layout.html' %}
+
+{% block user_center_content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <i class="fa fa-mobile"></i>
+                手机绑定
+            </h4>
+            <hr>
+            <div class="alert alert-success">
+                Tips：手机号可用作登录账号，也可用来找回密码。
+            </div>
+            <div class="alert alert-danger">
+                此项目暂不支持短信服务,所以只会发点虚假的验证码，也不会去验证，但是必填。
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form id="bind_phone_form">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ request.user.id }}">
+                            {% if request.user.mobile %}
+                                <div class="form-group row">
+                                    <label class="col-md-9 col-form-label"
+                                           style="font-weight: bold;">当前绑定手机号码: {{ request.user.mobile }}</label>
+                                </div>
+                            {% endif %}
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">填写手机号码</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="mobile" required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-md-right">点击获取验证码</label>
+                                <div class="col-sm-7">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="code" required autocomplete="off">
+                                        <button type="button" class="input-group-addon btn btn-primary"
+                                                onclick="getCaptcha()">发送验证码
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-2"></div>
+                                <button type="button" class="update_phone btn btn-success">
+                                    <i class="fa fa-blind"></i>
+                                    绑定手机
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        /**
+         * 从某一个范围里获取随机数
+         * @param min
+         * @param max
+         * @returns {*}
+         */
+        function rand(min, max) {
+            if (max < min) {
+                return Math.floor(Math.random() * (9999 - 1000)) + 1000;
+            }
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        /**
+         * 获取验证码
+         * @returns {boolean}
+         */
+        function getCaptcha() {
+            let mobile = $("[name=mobile]").val();
+            if (mobile === "") {
+                layer.msg("手机号码不能为空", {icon: 5});
+                return false;
+            }
+
+            // ... SmsService and callback => (res) => {}
+
+            layer.msg(rand(1000, 9999));
+        }
+
+        $(document).on("click", ".update_phone", function () {
+            let mobile = $("[name=mobile]").val();
+            let code = $("[name=code]").val();
+            if (mobile === "") {
+                layer.msg("手机号码不能为空", {icon: 5});
+                return false;
+            }
+            var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+            if (!reg.test(mobile)) {
+                layer.msg("手机号码格式错误", {icon: 5});
+                return false;
+            }
+            if (code === "") {
+                layer.msg("请输入弹出的验证码");
+                return false;
+            }
+            request("", {
+                data: $("#bind_phone_form").serialize(),
+                dataType: "json",
+                type: "POST"
+            });
+        });
+    </script>
+{% endblock %}

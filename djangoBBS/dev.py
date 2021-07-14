@@ -13,10 +13,24 @@ DATABASES = {
         'NAME': 'django_bbs',
         'HOST': '127.0.0.1',
         'USER': 'root',
-        'PASSWORD': '9264946',
+        'PASSWORD': '1',
         'PORT': '3306'
     }
 }
+
+# 需要安装 pip install django-redis
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#
+#         'LOCATION': 'redis://your_host_ip:6379',
+#
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             "PASSWORD": "",
+#         },
+#     },
+# }
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
@@ -30,4 +44,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 BASE_URL = '127.0.0.1:8000/'
 
 # 设置默认头像
-DEFAULT_BLANK_AVATAR = ''
+DEFAULT_BLANK_AVATAR = 'https://wxvirus.gitee.io/medias/avatar.jpg'

@@ -12,19 +12,21 @@
     <div class="row">
         <div class="col-sm-3">
             <div class="tab">
-                <a href="{% url 'edit_profile' request.user.id %}" class="item active">
+                {% load mylabel %}
+                <a href="{% url 'edit_profile' %}"
+                   class="item {% if request.path|get_url_name == 'edit_profile' %}active{% endif %}">
                     <i class="fa fa-user-circle"></i>
                     &nbsp;基本资料
                 </a>
-                <a href="{% url 'edit_avatar' %}" class="item">
+                <a href="{% url 'edit_avatar' %}" class="item {% if request.path|get_url_name == 'edit_avatar' %}active{% endif %}">
                     <i class="fa fa-image"></i>
                     &nbsp;修改头像
                 </a>
-                <a href="" class="item">
+                <a href="{% url 'edit_phone' %}" class="item {% if request.path|get_url_name == 'edit_phone' %}active{% endif %}">
                     <i class="fa fa-mobile"></i>
                     &nbsp;绑定手机
                 </a>
-                <a href="" class="item">
+                <a href="{% url 'edit_password' %}" class="item {% if request.path|get_url_name == 'edit_password' %}active{% endif %}">
                     <i class="fa fa-lock"></i>
                     &nbsp;修改密码
                 </a>
