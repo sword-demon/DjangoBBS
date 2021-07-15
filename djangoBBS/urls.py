@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
@@ -21,16 +22,16 @@ from bbs import views
 from djangoBBS import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # 首页
-    path('', views.index, name='home'),
-    # 注册
-    path('reg/', views.reg, name='register'),
-    # 登录
-    path('login/', views.login, name='login'),
-    # 退出
-    path('logout/', views.logout, name='logout'),
-    path('bbs/', include('bbs.urls')),
-    # media配置
-    re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})
-]
+                  path('admin/', admin.site.urls),
+                  # 首页
+                  path('', views.index, name='home'),
+                  # 注册
+                  path('reg/', views.reg, name='register'),
+                  # 登录
+                  path('login/', views.login, name='login'),
+                  # 退出
+                  path('logout/', views.logout, name='logout'),
+                  path('bbs/', include('bbs.urls')),
+                  # media配置
+                  # re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

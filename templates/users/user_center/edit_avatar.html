@@ -17,14 +17,21 @@
                     <div class="col-sm-12">
                         <form action="" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <input type="hidden" name="id" value="{{ request.user.id }}">
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label text-md-right">请选择图片</label>
                                 <div class="col-sm-7">
-                                    <img src="{{ request.user.avatar|default:'https://wxvirus.gitee.io/medias/avatar.jpg' }}"
-                                         alt="选择并上传头像"
-                                         id="avatar_img"
-                                         style="width: 140px;height: 140px;left:0;top: 0;border-radius: 50%;"/>
+                                    {% if request.user.avatar %}
+                                        <img src="/media/{{ request.user.avatar }}"
+                                             alt="选择并上传头像"
+                                             id="avatar_img"
+                                             style="width: 140px;height: 140px;left:0;top: 0;border-radius: 50%;"/>
+                                    {% else %}
+                                        <img src="/media/avatars/avatar.jpg"
+                                             alt="选择并上传头像"
+                                             id="avatar_img"
+                                             style="width: 140px;height: 140px;left:0;top: 0;border-radius: 50%;"/>
+                                    {% endif %}
+
                                     <input type="file" id="avatar" name="avatar" accept="image/jpg,image/png,image/gif"
                                            style="width: 100%;height:100%;opacity: 0;position: absolute;left:0;top: 0;"
                                            onchange="uploadImg(this)"/>
@@ -47,7 +54,6 @@
             let formData = new FormData();
             formData.append("avatar", $(obj)[0].files[0]);
             formData.append("csrfmiddlewaretoken", $("[name='csrfmiddlewaretoken']").val());
-            formData.append("id", $("[name='id']").val());
             $.ajax({
                 type: "POST",
                 url: "",
@@ -57,10 +63,10 @@
                 contentType: false,
                 success: function (data) {
                     // 接收返回的图片地址
-                    if (data.code === 1) {
+                    if (data.status === 1) {
                         layer.msg(data.msg, {icon: 6}, function () {
-                            // 设置图片路径为最新的路径
-                            $("#avatar_img").attr("src", data.data.path);
+                            // 直接刷新
+                            window.location.reload();
                         });
                     } else {
                         layer.msg(data.msg);

@@ -95,5 +95,7 @@ class UpdatePasswordForm(forms.Form):
 
 
 class UpdateAvatarForm(forms.Form):
-    id = forms.IntegerField(required=True, label='ID', error_messages={"required": "ID参数缺失"})
     avatar = forms.FileField(max_length=255)
+
+    def clean(self):
+        return self.cleaned_data

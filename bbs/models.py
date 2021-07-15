@@ -11,6 +11,8 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .storage import ImageStorage
+
 
 class Categories(models.Model):
     name = models.CharField(max_length=50, verbose_name='分类名称')
@@ -103,17 +105,10 @@ class Likes(models.Model):
         unique_together = (('user', 'topic'),)
 
 
-def user_directory_path(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = '{}.{}'.format(uuid.uuid4().hex[:10], ext)
-    # return the whole path to the file
-    return os.path.join(instance.user.id, "avatar", filename)
-
-
 class Users(AbstractUser):
     id = models.AutoField(primary_key=True)
     nickname = models.CharField(max_length=50, blank=True, null=True)
-    avatar = models.FileField(upload_to=user_directory_path, default="/avatars/avatar.jpg")
+    avatar = models.FileField(upload_to="avatar/%Y%m", default="/avatars/avatar.jpg", storage=ImageStorage())
     last_login_ip = models.CharField(max_length=64)
     update_time = models.IntegerField(blank=True, null=True)
     sex = models.PositiveIntegerField(default=0)

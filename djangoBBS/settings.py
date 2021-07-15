@@ -65,7 +65,6 @@ TEMPLATES = [
                 'extend.global.base_url.base_url',
                 # 配置默认头像
                 'extend.global.base_url.default_avatar',
-                'django.template.context_processors.media'
             ],
         },
     },
@@ -121,9 +120,8 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'bbs.Users'
 
-MEDIA_URL = '/media/'
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # 使用本地配置文件 dev：
 try:

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
 
 # Create your views here.
 from django.utils.decorators import method_decorator
@@ -54,18 +54,21 @@ class UserAvatar(UserCenter):
 
     @method_decorator(check_login, name='post')
     def post(self, request):
-        user = request.user
-        user_profile = get_object_or_404(Users, user=user)
         update_avatar_form = UpdateAvatarForm(request.POST, request.FILES)
         if update_avatar_form.is_valid():
-            avatar = request.FILES.get("avatar")
-            user_profile.avatar = avatar
-            user_profile.save()
+            user = request.user
+            user.avatar = update_avatar_form.cleaned_data.get("avatar")
+            user.save()
 
-        return Show.success("上传成功", data={"path": user_profile.avatar})
+            return Show.success("上传成功")
+        else:
+            return Show.fail("网络异常,图片上传失败,请稍后再试")
 
 
 class UserBindPhone(UserCenter):
+    """
+    用户绑定手机
+    """
 
     @method_decorator(check_login, name='get')
     def get(self, request):
@@ -82,6 +85,9 @@ class UserBindPhone(UserCenter):
 
 
 class UserChangePassword(UserCenter):
+    """
+    用户修改密码
+    """
 
     @method_decorator(check_login, name='get')
     def get(self, request):
