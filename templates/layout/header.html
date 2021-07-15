@@ -34,16 +34,26 @@
                                 </a>
                             {% endif %}
 
+                            <a class="dropdown-item" href="{% url 'blog_center' request.user.username %}">
+                                <i class="fa fa-book mr-2"></i>
+                                我的博客
+                            </a>
+
                             <a class="dropdown-item" href="{% url 'user_center' %}">
                                 <i class="fa fa-user-circle-o mr-2"></i>
                                 个人中心
+                            </a>
+
+                            <a class="dropdown-item" href="{% url 'edit_profile' %}">
+                                <i class="fa fa-edit mr-2"></i>
+                                编辑资料
                             </a>
 
                             <a class="dropdown-item" id="logout" href="#">
                                 <form action="{% url 'logout' %}" method="POST"
                                       onsubmit="return confirm('您确定要退出吗？');">
                                     {% csrf_token %}
-                                    <button class="btn btn-block btn-danger" type="submit" name="button">退出</button>
+                                    <button class="btn btn-block btn-sm btn-danger" type="submit" name="button">退出</button>
                                 </form>
                             </a>
                         </div>

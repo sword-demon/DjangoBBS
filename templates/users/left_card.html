@@ -11,7 +11,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="" class="alert-link">我的博文</a>
+                    <a href="{% url 'blog_center' request.user.username %}" class="alert-link">我的博文</a>
                     <span class="badge badge-secondary">3</span>
                 </li>
             </ul>

@@ -47,6 +47,9 @@ class UserProfile(UserCenter):
 
 
 class UserAvatar(UserCenter):
+    """
+    用户修改头像
+    """
 
     @method_decorator(check_login, name='get')
     def get(self, request):

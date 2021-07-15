@@ -4,7 +4,7 @@
             <a href="{% url 'edit_avatar' %}" title="点击修改头像">
                 <img style="width: 100%;"
                         {% load mylabel %}
-                     src="{% if request.user.avatar %}{{ base_url }}{{ request.user.avatar }}{% else %}{{ default_avatar }}{% endif %}"
+                     src="{% if request.user.avatar %}/media/{{ request.user.avatar }}{% else %}{{ default_avatar }}{% endif %}"
                      alt="{{ request.user.username }}">
             </a>
         </div>
