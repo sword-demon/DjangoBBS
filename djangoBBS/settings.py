@@ -35,7 +35,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bbs'
+    'bbs',
+    # 富文本
+    'ckeditor',
+    'ckeditor_uploader'
 ]
 
 MIDDLEWARE = [
@@ -122,6 +125,31 @@ AUTH_USER_MODEL = 'bbs.Users'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# 富文本文件上传地址  相对地址  相对于media的目录
+CKEDITOR_UPLOAD_PATH = 'topic_images'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': 'auto',
+        'tabSpaces': 4,
+        'toolbar': (
+            ['div', 'Source', '-', 'Save', 'Preview'],
+            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Print', 'SpellChecker', 'Scayt'],
+            ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
+            ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
+            ['Styles', 'Format', 'Font', 'FontSize'],
+            ['TextColor', 'BGColor'],
+            ['Maximize', 'ShowBlocks', '-', 'About', 'pbckcode'],
+        ),
+        'extraPlugins': ','.join(['codesnippet', 'widget', 'lineutils']),
+    }
+}
 
 # 使用本地配置文件 dev：
 try:

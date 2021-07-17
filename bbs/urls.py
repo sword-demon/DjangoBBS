@@ -1,5 +1,4 @@
 from django.urls import path
-from bbs import views
 from bbs.users import users_view
 from bbs.blogs import my_blogs
 
@@ -13,5 +12,7 @@ urlpatterns = [
     path('users/settings/edit_password/', users_view.UserChangePassword.as_view(), name='edit_password'),
 
     # 我的博客
-    path('blog/<str:username>/', my_blogs.MyBlog.as_view(), name='blog_center')
+    path('blog/<str:username>/', my_blogs.MyBlog.as_view(), name='blog_center'),
+    # 新建博文
+    path('topic/create/', my_blogs.CreateTopic.as_view(), name='create_topic'),
 ]

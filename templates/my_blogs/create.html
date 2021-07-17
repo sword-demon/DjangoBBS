@@ -1,0 +1,48 @@
+{% extends 'layout/app.html' %}
+
+{% block title %}
+    新建文章
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <form id="create_topic">
+                {% csrf_token %}
+                <div class="form-group row">
+                    {{ create_topic_form.category }}
+                    {{ create_topic_form.title }}
+                </div>
+                <div class="form-group row">
+                    {{ create_topic_form.body }}
+                </div>
+
+                <div class="form-group row">
+                    <textarea name="content" class="form-control" id="content" cols="30" rows="10"></textarea>
+                </div>
+
+                <div class="form-group row">
+                    <button type="button" class="btn_publish btn btn-success">发布文章</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {% load static %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
+    <script>
+        $(".django-ckeditor-widget").removeAttr('style');
+
+        $(document).on("click", ".btn_publish", function () {
+            request("", {
+                data: $("#create_topic").serialize(),
+                dataType: "json",
+                type: "POST"
+            });
+        });
+    </script>
+{% endblock %}

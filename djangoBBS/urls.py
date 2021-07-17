@@ -34,4 +34,7 @@ urlpatterns = [
                   path('bbs/', include('bbs.urls')),
                   # media配置
                   # re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})
+
+                  # 富文本
+                  re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

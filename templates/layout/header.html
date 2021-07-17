@@ -21,9 +21,17 @@
             <ul class="navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link mt-1 mr-3 font-weight-bold" href="{% url 'create_topic' %}">
+                            <i class="fa fa-paint-brush"></i>
+                            撰写博文
+                        </a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="/media/{{ request.user.avatar }}"
+                                class="img-responsive img-circle" width="30px" height="30px"  alt="avatar"/>
                             {{ request.user.username }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">

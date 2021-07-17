@@ -22,6 +22,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+# 用于生产环境 使用: python manage.py collectstatic 将静态资源拷贝到工程下
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 BASE_URL = '生产环境的域名地址'

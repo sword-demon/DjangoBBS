@@ -10,6 +10,7 @@ import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from ckeditor.fields import RichTextField
 
 from .storage import ImageStorage
 
@@ -25,6 +26,9 @@ class Categories(models.Model):
         db_table = 'categories'
         verbose_name = '帖子分类表'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Comments(models.Model):
@@ -52,6 +56,9 @@ class Notifications(models.Model):
         verbose_name = '通知表'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.title
+
 
 class Tags(models.Model):
     title = models.CharField(max_length=50)
@@ -63,10 +70,13 @@ class Tags(models.Model):
         verbose_name = '标签表'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.title
+
 
 class Topics(models.Model):
     title = models.CharField(max_length=64)
-    body = models.TextField(blank=True, null=True)
+    body = RichTextField(blank=True, null=True)
     user = models.ForeignKey(to="Users", to_field="id", on_delete=models.CASCADE)
     category = models.ForeignKey(to="Categories", to_field="id", on_delete=models.CASCADE)
     reply_count = models.PositiveIntegerField(default=0)
@@ -79,6 +89,9 @@ class Topics(models.Model):
         db_table = 'topics'
         verbose_name = '帖子表'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
 
 
 class Collects(models.Model):
@@ -141,3 +154,6 @@ class Log(models.Model):
         db_table = 'logs'
         verbose_name = '日志记录表'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.level
