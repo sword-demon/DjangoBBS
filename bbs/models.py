@@ -8,6 +8,7 @@
 import os
 import uuid
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from ckeditor.fields import RichTextField
@@ -76,7 +77,7 @@ class Tags(models.Model):
 
 class Topics(models.Model):
     title = models.CharField(max_length=64)
-    body = RichTextField(blank=True, null=True)
+    body = RichTextUploadingField(blank=True, null=True)
     user = models.ForeignKey(to="Users", to_field="id", on_delete=models.CASCADE)
     category = models.ForeignKey(to="Categories", to_field="id", on_delete=models.CASCADE)
     reply_count = models.PositiveIntegerField(default=0)

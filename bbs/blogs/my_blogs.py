@@ -32,7 +32,9 @@ class CreateTopic(View):
 
     @method_decorator(check_login, name='post')
     def post(self, request):
+        # a = 1 / 0 测试异常
         print(request.POST)
-        create_topic_form = CreateTopicForm()
+        create_topic_form = CreateTopicForm(request.POST)
+        print(create_topic_form.cleaned_data)
 
         return Show.success()
