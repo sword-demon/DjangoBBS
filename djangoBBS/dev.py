@@ -13,7 +13,7 @@ DATABASES = {
         'NAME': 'django_bbs',
         'HOST': '127.0.0.1',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '9264946',
         'PORT': '3306'
     }
 }
