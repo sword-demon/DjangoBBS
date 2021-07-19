@@ -1,3 +1,5 @@
+import time
+
 from django.shortcuts import render
 
 # Create your views here.
@@ -32,9 +34,15 @@ class CreateTopic(View):
 
     @method_decorator(check_login, name='post')
     def post(self, request):
-        # a = 1 / 0 测试异常
-        print(request.POST)
         create_topic_form = CreateTopicForm(request.POST)
-        print(create_topic_form.cleaned_data)
+        if create_topic_form.is_valid():
+            print(create_topic_form.cleaned_data['body'])
+            new_record = create_topic_form.save(commit=False)
+            new_record.user = request.user
+            new_record.create_time = time.time()
+            new_record.save()
 
-        return Show.success()
+            return Show.success("添加成功")
+        else:
+            # print(create_topic_form.errors)
+            return Show.fail(create_topic_form.errors)

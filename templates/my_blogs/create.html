@@ -40,13 +40,18 @@
         $(".django-ckeditor-widget").removeAttr('style');
 
         $(document).on("click", ".btn_publish", function () {
-            var data = CKEDITOR.instances.body.getData();
-            console.log(data)
+            var text_area_data = CKEDITOR.instances.body.getData();
+            console.log(text_area_data)
             request("", {
-                data: $("#create_topic").serialize(),
+                data: {
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    "category": $("#id_category").find("option:selected").val(),
+                    "title": $("#id_title").val(),
+                    "body": text_area_data
+                },
                 dataType: "json",
                 type: "POST"
-            });
+            }, "{% url 'home' %}");
         });
     </script>
 {% endblock %}

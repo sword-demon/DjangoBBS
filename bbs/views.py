@@ -6,13 +6,14 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from bbs.forms.user_form import RegisterForm, LoginForm
-from bbs.models import Users
+from bbs.models import Users, Topics
 from utils.json_response import Show
 from utils.tools import get_ip
 
 
 def index(request):
-    return render(request, 'root/index.html')
+    topics = Topics.objects.all().order_by("create_time")
+    return render(request, 'root/index.html', {"topics": topics})
 
 
 def reg(request):
