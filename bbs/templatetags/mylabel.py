@@ -1,5 +1,5 @@
-import datetime
 import json
+from datetime import datetime
 
 from django import template
 
@@ -25,7 +25,7 @@ def min_nums(start_time):
     """
     # 处理格式,加上秒位
     startTime1 = start_time
-    now = datetime.datetime.now()
+    now = datetime.now()
     # seconds = (endTime2 - startTime2).seconds
     # 来获取时间差中的秒数。注意，seconds获得的秒只是时间差中的小时、分钟和秒部分的和，并没有包含时间差的天数（既是两个时间点不是同一天，失效）
     total_seconds = (now - startTime1).total_seconds()
@@ -78,3 +78,12 @@ def get_url_name(path):
     rm = resolve(path)
     url_name = rm.url_name
     return url_name
+
+
+@register.filter()
+def timestamp(value):
+    try:
+        return datetime.fromtimestamp(value)
+    except AttributeError as e:
+        print(str(e))
+        return ''

@@ -1,15 +1,40 @@
 {% if topics %}
+    <form action="" class="search-form">
+        <div class="form-row">
+            <div class="col-md-9">
+                <div class="form-row">
+                    <div class="col-auto">
+                        <input type="text" class="form-control form-control-sm"
+                                                 name="search" placeholder="搜索"></div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary btn-sm">搜索</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select name="order" class="form-control form-control-sm float-right">
+                    <option value="">排序方式</option>
+                    <option value="id_asc">Id升序</option>
+                    <option value="id_desc">Id降序</option>
+                    <option value="create_time_asc">创建时间升序</option>
+                    <option value="create_time_desc">最新</option>
+                    <option value="update_time_desc">最近更新</option>
+                </select>
+            </div>
+        </div>
+    </form>
     <ul class="list-unstyled">
         {% for topic in topics %}
             <li class="media mt-2">
                 <div class="media-left">
                     <a href="">
                         <img style="width: 52px; height: 52px;" class="media-object img-thumbnail mr-3"
-                             src="/media/{{ request.user.avatar }}" alt="">
+                             src="/media/{{ topic.user.avatar }}" alt="">
                     </a>
                 </div>
 
                 <div class="media-body">
+
                     <div class="media-heading mt-0 mb-1">
                         <a href="" title="{{ topic.title }}">
                             {{ topic.title }}
@@ -35,7 +60,8 @@
                         <span> • </span>
                         <i class="fa fa-clock"></i>
                         <span class="timeago"
-                              title="最后活跃于：{{ topic.update_time }}">{{ topic.update_time }}</span>
+                                {% load mylabel %}
+                              title="最后活跃于：{{ topic.create_time|timestamp }}">{{ topic.create_time|timestamp }}</span>
                     </small>
                 </div>
             </li>
