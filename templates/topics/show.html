@@ -1,0 +1,80 @@
+{% extends 'layout/app.html' %}
+
+{% block title %}
+    文章标题
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs author-info">
+            <div class="card ">
+                <div class="card-body">
+                    <div class="text-center">
+                        作者：{{ topic.user.uesrname }}
+                    </div>
+                    <hr>
+                    <div class="media">
+                        <div align="center">
+                            <a href="">
+                                <img class="thumbnail img-fluid" src="/media/{{ topic.user.avatar }}" width="300px"
+                                     height="300px">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 topic-content">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="text-center mt-3 mb-3">
+                        {{ topic.title }}
+                    </h1>
+
+                    <div class="article-meta text-center text-secondary">
+                        {% load mylabel %}
+                        {{ topic.create_time|timestamp }}
+                        ⋅
+                        <i class="far fa-comment"></i>
+                        {{ topic.reply_count }}
+                    </div>
+
+                    <div class="topic-body mt-4 mb-4">
+                        {{ topic.body|safe }}
+                    </div>
+
+                    <!-- 判断是不是自己的文章 -->
+                    {% if request.user.id == topic.user.id %}
+                        <div class="operate">
+                            <hr>
+                            <a href="" class="btn btn-outline-secondary btn-sm"
+                               role="button">
+                                <i class="fa fa-edit"></i> 编辑
+                            </a>
+                            <form action="" method="post"
+                                  style="display: inline-block;"
+                                  onsubmit="return confirm('您确定要删除吗？');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fa fa-trash-alt"></i> 删除
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 用户回复列表 -->
+            <div class="card topic-reply mt-4">
+                <div class="card-body">
+                    {% include 'topics/_reply_box.html' %}
+                    {#                    {% include 'topics/_reply_list.html' %}#}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+

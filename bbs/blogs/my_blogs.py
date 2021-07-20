@@ -21,7 +21,7 @@ class MyBlog(View):
     @method_decorator(check_login, name='get')
     def get(self, request, username):
         # 根据用户名查询该用户的一些数据
-        nums = [i for i in range(20)]
+        topics = Topics.objects.filter(user__username=username).all()
         return render(request, 'my_blogs/blog_center.html', locals())
 
 

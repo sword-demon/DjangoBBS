@@ -96,105 +96,12 @@
             </div>
             <div class="row mt-2">
                 <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">博客标签</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                {% for i in nums %}
-                                    <div class="col-sm-4">
-                                        <a href="">
-                                            <span class="w-50 badge badge-pill">标签名 2</span>
-                                        </a>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
+                    {% include 'my_blogs/user_tags.html' %}
                 </div>
             </div>
         </div>
         <div class="col-sm-8">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fa fa-book"></i>
-                        所有文章
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="blog">
-                        <div class="event">
-                            <div class="content">
-                                <div class="summary">
-                                    <a href="">jQuery学习笔记</a>
-                                </div>
-                                <div class="meta" style="line-height: 34px;">
-                                    <div class="date"
-                                         style="font-size: 13px;margin: 7px 0em 0em;margin-left:0px">
-                                        <a class="" data-tooltip="2019-08-06 22:58:10">创建于 <span
-                                                title="2019-08-06 22:58:10">1年前</span></a>
-                                        <span class="divider">|</span>
-                                        <a>
-                                            阅读数 359
-                                        </a>
-                                        <span class="divider">|</span>
-                                        <a>
-                                            评论数 0
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-meta">
-                                <a class="btn btn-sm"
-                                   href=""><i class="fa fa-thumbs-o-up"></i> 1
-                                </a>
-                                <a class="btn btn-sm"
-                                   href=""><i class="fa fa-thumbs-o-down"></i> 1
-                                </a>
-                                <a class="ui label basic light grey"
-                                   href=""><i class="fa fa-comment"></i> 0
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="event">
-                            <div class="content">
-                                <div class="summary">
-                                    <a href="">jQuery学习笔记</a>
-                                </div>
-                                <div class="meta" style="line-height: 34px;">
-                                    <div class="date"
-                                         style="font-size: 13px;margin: 7px 0 0 0;">
-                                        <a class="" data-tooltip="2019-08-06 22:58:10">创建于 <span
-                                                title="2019-08-06 22:58:10">1年前</span></a>
-                                        <span class="divider">|</span>
-                                        <a>
-                                            阅读数 359
-                                        </a>
-                                        <span class="divider">|</span>
-                                        <a>
-                                            评论数 0
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-meta">
-                                <a class="btn btn-sm"
-                                   href=""><i class="fa fa-thumbs-o-up"></i> 1
-                                </a>
-                                <a class="btn btn-sm"
-                                   href=""><i class="fa fa-thumbs-o-down"></i> 1
-                                </a>
-                                <a class="ui label basic light grey"
-                                   href=""><i class="fa fa-comment"></i> 0
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include 'my_blogs/user_all_topics.html' %}
         </div>
     </div>
 {% endblock %}

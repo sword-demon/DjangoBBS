@@ -12,8 +12,13 @@ from utils.tools import get_ip
 
 
 def index(request):
-    topics = Topics.objects.all().order_by("create_time")
-    return render(request, 'root/index.html', {"topics": topics})
+    order = request.GET.get("order", "-create_time")
+    # 防止用户擅自篡改order的值
+    if order not in ["-create_time", "-view_count"]:
+        order = "-create_time"
+    topics = Topics.objects.all().order_by(order)
+    # print(topics.query)
+    return render(request, 'root/index.html', {"topics": topics, "order": order})
 
 
 def reg(request):

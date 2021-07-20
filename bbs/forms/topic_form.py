@@ -15,5 +15,12 @@ class CreateTopicForm(forms.ModelForm):
                  },
         widgets = {
             "category": forms.Select(attrs={'class': "form-control col-sm-4"}),
-            "title": forms.widgets.TextInput(attrs={"class": "form-control col-sm-6 ml-2", "placeholder": "标题"}),
+            "title": forms.widgets.TextInput(
+                attrs={"class": "form-control col-sm-6 ml-2", "placeholder": "标题"}),
+        }
+        error_messages = {
+            "category": {
+                "required": "请选择分类"
+            },
+            "title": {"required": "文章标题不能为空", }
         }
