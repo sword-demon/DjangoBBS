@@ -11,7 +11,7 @@
                 <div class="event">
                     <div class="content">
                         <div class="summary">
-                            <a href="">{{ topic.title }}</a>
+                            <a href="{% url 'topic_show' topic.id %}">{{ topic.title }}</a>
                         </div>
                         <div class="meta" style="line-height: 34px;">
                             <div class="date"
@@ -31,14 +31,28 @@
                         </div>
                     </div>
                     <div class="item-meta">
-                        <a class="btn btn-sm"
-                           href=""><i class="fa fa-thumbs-o-up"></i> 1
-                        </a>
-                        <a class="btn btn-sm"
-                           href=""><i class="fa fa-thumbs-o-down"></i> 1
-                        </a>
+                        {% if topic.user.id == request.user.id %}
+                            <a class="btn btn-sm"
+                               href="javascript:;" onclick="layer.msg('不能对自己的文章点赞哦');" data-topic_id="{{ topic.id }}"><i
+                                    class="fa fa-thumbs-o-up"></i> {{ topic.like_num }}
+                            </a>
+                            <a class="btn btn-sm"
+                               href="javascript:;" onclick="layer.msg('你还想踩自己的文章?');" data-topic_id="{{ topic.id }}"><i
+                                    class="fa fa-thumbs-o-down"></i> {{ topic.hate_num }}
+                            </a>
+                        {% else %}
+                            <a class="btn btn-sm btn_like"
+                               href="javascript:;" data-topic_id="{{ topic.id }}"><i
+                                    class="fa fa-thumbs-o-up"></i> {{ topic.like_num }}
+                            </a>
+                            <a class="btn btn-sm btn_hate"
+                               href="javascript:;" data-topic_id="{{ topic.id }}"><i
+                                    class="fa fa-thumbs-o-down"></i> {{ topic.hate_num }}
+                            </a>
+                        {% endif %}
+
                         <a class="ui label basic light grey"
-                           href=""><i class="fa fa-comment"></i> 0
+                           href=""><i class="fa fa-comment"></i> {{ topic.comment_num }}
                         </a>
                     </div>
                 </div>

@@ -4,6 +4,10 @@
     新建文章
 {% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="/static/css/jquery.tagsinput.min.css">
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
@@ -19,6 +23,11 @@
                 </div>
 
                 <div class="form-group row">
+                    <input type="text" class="form-control" id="tags" name="tags"
+                           placeholder="输入标签Enter确认"/>
+                </div>
+
+                <div class="form-group row">
                     <button type="button" class="btn_publish btn btn-success">发布文章</button>
                 </div>
             </form>
@@ -30,24 +39,31 @@
     {% load static %}
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script src="/static/js/jquery.tagsinput.min.js"></script>
 
     <script>
 
         window.onload = function () {
             CKEDITOR.replace('body');
+            $("#tags").tagsInput();
         }
 
         $(".django-ckeditor-widget").removeAttr('style');
 
         $(document).on("click", ".btn_publish", function () {
             var text_area_data = CKEDITOR.instances.body.getData();
-            console.log(text_area_data)
+            {#console.log(text_area_data)#}
+            var tags = $("#tags").val();
+            {#var tags_arr = tags.split(",")#}
+            {#console.log(tags, tags_arr);#}
+            {#return false;#}
             request("", {
                 data: {
                     "csrfmiddlewaretoken": "{{ csrf_token }}",
                     "category": $("#id_category").find("option:selected").val(),
                     "title": $("#id_title").val(),
-                    "body": text_area_data
+                    "body": text_area_data,
+                    "tags": tags
                 },
                 dataType: "json",
                 type: "POST"
