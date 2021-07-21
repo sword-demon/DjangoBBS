@@ -17,5 +17,17 @@ def main():
     execute_from_command_line(sys.argv)
 
 
+def init_categories():
+    from bbs.models import Categories
+    import time
+
+    Categories.objects.all().delete()
+    Categories.objects.create(name="分享", description="分享创造,分享发现", create_time=time.time())
+    Categories.objects.create(name="教程", description="开发技巧、推荐扩展包等", create_time=time.time())
+    Categories.objects.create(name="问答", description="请保持友善,互帮互助", create_time=time.time())
+    Categories.objects.create(name="公告", description="站点公告", create_time=time.time())
+
+
 if __name__ == '__main__':
     main()
+    # init_categories()

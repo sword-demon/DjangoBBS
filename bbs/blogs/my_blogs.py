@@ -36,7 +36,7 @@ class CreateTopic(View):
     def post(self, request):
         create_topic_form = CreateTopicForm(request.POST)
         if create_topic_form.is_valid():
-            print(create_topic_form.cleaned_data['body'])
+            # print(create_topic_form.cleaned_data['body'])
             new_record = create_topic_form.save(commit=False)
             new_record.user = request.user
             new_record.create_time = time.time()
