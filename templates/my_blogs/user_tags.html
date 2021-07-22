@@ -4,10 +4,10 @@
     </div>
     <div class="card-body">
         <div class="row">
-            {% for i in nums %}
+            {% for tag in tags %}
                 <div class="col-sm-4">
                     <a href="">
-                        <span class="w-50 badge badge-pill">标签名 2</span>
+                        <span class="w-50 badge badge-pill">{{ tag.title }}</span>
                     </a>
                 </div>
             {% endfor %}

@@ -49,18 +49,15 @@
                     {% if request.user.id == topic.user.id %}
                         <div class="operate">
                             <hr>
-                            <a href="" class="btn btn-outline-secondary btn-sm"
+                            <a href="{% url 'edit_topic' topic.id %}" class="btn btn-outline-secondary btn-sm"
                                role="button">
                                 <i class="fa fa-edit"></i> 编辑
                             </a>
-                            <form action="" method="post"
-                                  style="display: inline-block;"
-                                  onsubmit="return confirm('您确定要删除吗？');">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-secondary btn-sm">
-                                    <i class="fa fa-trash-alt"></i> 删除
-                                </button>
-                            </form>
+
+                            <button type="button" data-topic_id="{{ topic.id }}"
+                                    class="btn_delete_topic btn btn-outline-secondary btn-sm">
+                                <i class="fa fa-trash"></i> 删除
+                            </button>
                         </div>
                     {% endif %}
                 </div>
@@ -76,5 +73,30 @@
 
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).on("click", ".btn_delete_topic", function () {
+            var topic_id = $(this).data("topic_id");
+            if (!topic_id) {
+                layer.msg("文章id参数缺失");
+                return false;
+            }
+            layer.confirm("你确定要删除吗", {
+                btn: ['确定', '取消'],
+                title: "提示"
+            }, function () {
+                request("{% url 'delete_topic' %}", {
+                    data: {
+                        "topic_id": topic_id,
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    },
+                    type: "DELETE",
+                    dataType: "json",
+                }, "{% url 'home' %}");
+            });
+        });
+    </script>
 {% endblock %}
 

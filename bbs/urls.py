@@ -14,6 +14,9 @@ urlpatterns = [
     path('users/settings/edit_password/', users_view.UserChangePassword.as_view(), name='edit_password'),
     path('categories/<int:category_id>/', category.CategoryView.as_view(), name='category_show'),
     path('topics/<int:topic_id>/', topics.TopicView.as_view(), name='topic_show'),
+    path('topics/edit/<int:topic_id>/', topics.UpdateTopicView.as_view(), name="edit_topic"),
+    path('topics/update/', topics.UpdateTopicView.as_view(), name="update_topic"),
+    path('topics/delete/', topics.DeleteTopicView.as_view(), name="delete_topic"),
 
     # 我的博客
     path('blog/<str:username>/', my_blogs.MyBlog.as_view(), name='blog_center'),

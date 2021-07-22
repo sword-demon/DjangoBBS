@@ -116,7 +116,6 @@ class Likes(models.Model):
         db_table = 'likes'
         verbose_name = '点赞表'
         verbose_name_plural = verbose_name
-        unique_together = (('user', 'topic'),)
 
 
 class Users(AbstractUser):

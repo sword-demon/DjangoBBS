@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-3 offset-lg-1">
+                {{ bloger.username }}
+                {% if bloger.id == request.user.id %}
+                    <a href="{% url 'edit_profile' %}"><i class="fa fa-edit"></i></a>
+                {% endif %}
+            </div>
+            <div class="col-sm-2 offset-sm-5">
+                <img src="/media/{{ bloger.avatar }}" alt="头像"
+                     style="width: 44px;height: 44px;">
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="ml-3">文章: {{ topics.count }}</div>
+            <div class="ml-3">点赞: {{ likes }}</div>
+            <div class="ml-3">收藏: {{ collects }}</div>
+        </div>
+    </div>
+</div>

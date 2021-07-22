@@ -1,10 +1,11 @@
 import json
 import time
 
+from django.db.models import F
 from django.http import JsonResponse
 from django.utils.deprecation import MiddlewareMixin
 
-from bbs.models import Log
+from bbs.models import Log, Topics
 from djangoBBS import settings
 
 import logging
@@ -48,3 +49,17 @@ class DataRecordMiddleware(MiddlewareMixin):
         log = Log(request_path=request_path, ip=ip, params=params, content=content, level=level, user_id=user_id,
                   create_time=time.time())
         log.save()
+
+
+class TopicViewObserver(MiddlewareMixin):
+
+    def process_request(self, request):
+        from django.urls import resolve
+        path = request.path
+        rm = resolve(path)
+        url_name = rm.url_name
+        if url_name == "topic_show":
+            last_topic_id = path.strip("/").split("/")[2]
+            # print(last_topic_id)
+            # 查看文章阅读数自增
+            Topics.objects.filter(id=int(last_topic_id)).update(view_count=F("view_count") + 1)

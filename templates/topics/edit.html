@@ -1,0 +1,75 @@
+{% extends 'layout/app.html' %}
+
+{% block title %}
+    编辑文章 {{ topic.title }}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/jquery.tagsinput.min.css">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <form id="create_topic">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <select name="category" id="id_category" class="form-control col-sm-4" required>
+                        <option value="0">请选择分类</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}"
+                                    {% if category.id == topic.category.id %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" name="title" minlength="50" class="form-control col-sm-6 ml-2" required placeholder="请输入文章标题"
+                           value="{{ topic.title }}">
+                </div>
+                <div class="form-group row">
+                    <textarea name="body" id="body" cols="30" rows="10">{{ topic.body|safe }}</textarea>
+                </div>
+
+                <div class="form-group row">
+                    <input type="text" class="form-control" id="tags" name="tags" value="{{ tags_value }}"
+                           placeholder="输入标签Enter确认"/>
+                </div>
+
+                <div class="form-group row">
+                    <button type="button" class="btn_update btn btn-success">修改文章</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {% load static %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script src="/static/js/jquery.tagsinput.min.js"></script>
+
+    <script>
+
+        window.onload = function () {
+            CKEDITOR.replace('body');
+            $("#tags").tagsInput();
+        }
+
+        $(".django-ckeditor-widget").removeAttr('style');
+
+        $(document).on("click", ".btn_update", function () {
+            var text_area_data = CKEDITOR.instances.body.getData();
+            var tags = $("#tags").val();
+            request("{% url 'update_topic' %}", {
+                data: {
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    "category": $("#id_category").find("option:selected").val(),
+                    "title": $("#id_title").val(),
+                    "body": text_area_data,
+                    "tags": tags
+                },
+                dataType: "json",
+                type: "POST"
+            }, "{% url 'home' %}");
+        });
+    </script>
+{% endblock %}

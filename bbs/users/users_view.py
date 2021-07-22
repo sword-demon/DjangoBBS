@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 
 from bbs.forms.user_form import UpdateUserForm, UpdateUserPhone, UpdatePasswordForm, UpdateAvatarForm
-from bbs.models import Users
+from bbs.models import Users, Topics, Likes, Comments
 from djangoBBS import dev, settings
 from utils.decorator import check_login
 from utils.json_response import Show
@@ -23,7 +23,13 @@ class UserCenter(BaseView):
 
     @method_decorator(check_login, name='get')
     def get(self, request):
-        return render(request, 'users/user_center.html')
+        topics = Topics.objects.filter(user_id=request.user.id).all()
+        for topic in topics:
+            topic.like_num = Likes.objects.filter(topic_id=topic.id, is_like=1).count()
+            topic.hate_num = Likes.objects.filter(topic_id=topic.id, is_like=0).count()
+            topic.comment_num = Comments.objects.filter(topic_id=topic.id).count()
+        my = Users.objects.filter(id=request.user.id).first()
+        return render(request, 'users/user_center.html', {"topics": topics, "my": my})
 
     def post(self, request):
         pass

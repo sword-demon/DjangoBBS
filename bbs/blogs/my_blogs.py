@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 
 from bbs.forms.topic_form import CreateTopicForm
-from bbs.models import Topics, Users, Tags, Likes, Comments
+from bbs.models import Topics, Users, Tags, Likes, Comments, Collects
 from djangoBBS import dev, settings
 from utils.decorator import check_login
 from utils.json_response import Show
@@ -28,6 +28,10 @@ class MyBlog(View):
             topic.like_num = Likes.objects.filter(topic_id=topic.id, is_like=1).count()
             topic.hate_num = Likes.objects.filter(topic_id=topic.id, is_like=0).count()
             topic.comment_num = Comments.objects.filter(topic_id=topic.id).count()
+        bloger = Users.objects.filter(username=username).first()
+        likes = Likes.objects.filter(topic_id__in=topics.values("id"), is_like=1).count()
+        collects = Collects.objects.filter(user_id=bloger.id).count()
+        tags = Tags.objects.filter(user_id=bloger.id)
         return render(request, 'my_blogs/blog_center.html', locals())
 
 
@@ -83,7 +87,7 @@ def hate(request):
         is_like = 0
         like = Likes.objects.create(topic_id=topic_id, user_id=user_id, is_like=is_like)
         if like.id > 0:
-            return Show.success("点赞成功")
+            return Show.success("踩成功")
         else:
             return Show.fail("网络异常")
     else:

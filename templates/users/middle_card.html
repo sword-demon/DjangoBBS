@@ -12,7 +12,7 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body text-center">
-                个人签名: {% if request.user.sign %}{{ request.user.sign }}{% else %}暂无{% endif %}
+                个人签名: {% if my.sign %}{{ my.sign }}{% else %}暂无{% endif %}
             </div>
         </div>
     </div>
@@ -27,67 +27,58 @@
             </div>
             <div class="card-body">
                 <div class="blog">
-                    <div class="event">
-                        <div class="content">
-                            <div class="summary">
-                                <a href="">jQuery学习笔记</a>
-                            </div>
-                            <div class="meta" style="line-height: 34px;">
-                                <div class="date"
-                                     style="font-size: 13px;margin: 7px 0em 0em;margin-left:0px">
-                                    <a class="" data-tooltip="2019-08-06 22:58:10">创建于 <span
-                                            title="2019-08-06 22:58:10">1年前</span></a>
-                                    <span class="divider">|</span>
-                                    <a>
-                                        阅读数 359
-                                    </a>
-                                    <span class="divider">|</span>
-                                    <a>
-                                        评论数 0
-                                    </a>
+                    {% for topic in topics %}
+                        <div class="event">
+                            <div class="content">
+                                <div class="summary">
+                                    <a href="{% url 'topic_show' topic.id %}">{{ topic.title }}</a>
+                                </div>
+                                <div class="meta" style="line-height: 34px;">
+                                    <div class="date"
+                                         style="font-size: 13px;margin: 7px 0 0 0;">
+                                        {% load mylabel %}
+                                        <a class="" data-tooltip="{{ topic.create_time|timestamp }}">创建于 <span
+                                                title="{{ topic.create_time|timestamp }}">{{ topic.create_time|timestamp }}</span></a>
+                                        <span class="divider">|</span>
+                                        <a>
+                                            阅读数 {{ topic.view_count }}
+                                        </a>
+                                        <span class="divider">|</span>
+                                        <a>
+                                            评论数 {{ topic.reply_count }}
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="item-meta">
-                            <a class="btn btn-sm"
-                               href="https://learnku.com/articles/32188"><i class="fa fa-thumbs-o-up"></i> 1
-                            </a>
-                            <a class="ui label basic light grey"
-                               href="https://learnku.com/articles/32188"><i class="fa fa-comment"></i> 0
-                            </a>
-                        </div>
-                    </div>
+                            <div class="item-meta">
+                                {% if topic.user.id == request.user.id %}
+                                    <a class="btn btn-sm"
+                                       href="javascript:;" onclick="layer.msg('不能对自己的文章点赞哦');"
+                                       data-topic_id="{{ topic.id }}"><i
+                                            class="fa fa-thumbs-o-up"></i> {{ topic.like_num }}
+                                    </a>
+                                    <a class="btn btn-sm"
+                                       href="javascript:;" onclick="layer.msg('你还想踩自己的文章?');"
+                                       data-topic_id="{{ topic.id }}"><i
+                                            class="fa fa-thumbs-o-down"></i> {{ topic.hate_num }}
+                                    </a>
+                                {% else %}
+                                    <a class="btn btn-sm btn_like"
+                                       href="javascript:;" data-topic_id="{{ topic.id }}"><i
+                                            class="fa fa-thumbs-o-up"></i> {{ topic.like_num }}
+                                    </a>
+                                    <a class="btn btn-sm btn_hate"
+                                       href="javascript:;" data-topic_id="{{ topic.id }}"><i
+                                            class="fa fa-thumbs-o-down"></i> {{ topic.hate_num }}
+                                    </a>
+                                {% endif %}
 
-                    <div class="event">
-                        <div class="content">
-                            <div class="summary">
-                                <a href="">jQuery学习笔记</a>
-                            </div>
-                            <div class="meta" style="line-height: 34px;">
-                                <div class="date"
-                                     style="font-size: 13px;margin: 7px 0 0 0;">
-                                    <a class="" data-tooltip="2019-08-06 22:58:10">创建于 <span
-                                            title="2019-08-06 22:58:10">1年前</span></a>
-                                    <span class="divider">|</span>
-                                    <a>
-                                        阅读数 359
-                                    </a>
-                                    <span class="divider">|</span>
-                                    <a>
-                                        评论数 0
-                                    </a>
-                                </div>
+                                <a class="ui label basic light grey"
+                                   href=""><i class="fa fa-comment"></i> {{ topic.comment_num }}
+                                </a>
                             </div>
                         </div>
-                        <div class="item-meta">
-                            <a class="btn btn-sm"
-                               href="https://learnku.com/articles/32188"><i class="fa fa-thumbs-o-up"></i> 1
-                            </a>
-                            <a class="ui label basic light grey"
-                               href="https://learnku.com/articles/32188"><i class="fa fa-comment"></i> 0
-                            </a>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
