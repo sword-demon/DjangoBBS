@@ -13,6 +13,7 @@
         <div class="col-sm-12 col-md-12 col-lg-12">
             <form id="create_topic">
                 {% csrf_token %}
+                <input type="hidden" name="id" value="{{ topic.id }}">
                 <div class="form-group row">
                     <select name="category" id="id_category" class="form-control col-sm-4" required>
                         <option value="0">请选择分类</option>
@@ -25,7 +26,7 @@
                            value="{{ topic.title }}">
                 </div>
                 <div class="form-group row">
-                    <textarea name="body" id="body" cols="30" rows="10">{{ topic.body|safe }}</textarea>
+                    <textarea name="body" id="body" cols="30" rows="10">{{ topic.body }}</textarea>
                 </div>
 
                 <div class="form-group row">
@@ -63,9 +64,10 @@
                 data: {
                     "csrfmiddlewaretoken": "{{ csrf_token }}",
                     "category": $("#id_category").find("option:selected").val(),
-                    "title": $("#id_title").val(),
+                    "title": $("[name=title]").val(),
                     "body": text_area_data,
-                    "tags": tags
+                    "tags": tags,
+                    "id": $("[name=id]").val()
                 },
                 dataType: "json",
                 type: "POST"

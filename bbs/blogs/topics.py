@@ -1,18 +1,28 @@
+import time
+
+from django.db import transaction
 from django.http import QueryDict
 from django.shortcuts import render
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DeleteView
 
+from bbs.forms.topic_form import CreateTopicForm
 from bbs.models import Topics, Tags, Categories
 from utils.json_response import Show
 
 
 class TopicView(View):
+    """
+    文章详情，后续可以使用DetailView
+    """
 
     def get(self, request, topic_id):
         topic = Topics.objects.get(id=topic_id)
-        return render(request, 'topics/show.html', locals())
+        # 获取tags
+        tags = Tags.objects.filter(topic_id=topic_id).all()
+        # 少用local
+        return render(request, 'topics/show.html', {"topic": topic, "tags": tags})
 
 
 class UpdateTopicView(View):
@@ -28,7 +38,34 @@ class UpdateTopicView(View):
         return render(request, 'topics/edit.html', {"topic": topic, "tags_value": tags_value, "categories": categories})
 
     def post(self, request):
-        pass
+        topic_id = request.POST.get("id", 0)
+        if not topic_id:
+            return Show.fail("参数缺失")
+        obj = Topics.objects.filter(id=topic_id).first()
+        if not obj:
+            return Show.fail("该文章已不存在")
+        form = CreateTopicForm(data=request.POST, instance=obj)
+        tags = request.POST.get("tags")
+        tags_list = tags.split(",")
+        if form.is_valid():
+            with transaction.atomic():
+                record = form.save(commit=False)
+                record.user = request.user
+                record.update_time = time.time()
+                record.save()
+
+                if tags:
+                    # 先删除原先的标签信息，再进行重新添加
+                    Tags.objects.filter(user_id=request.user.id, topic_id=topic_id).delete()
+                    tags_insert_batch = []
+                    for i in tags_list:
+                        tags_insert_batch.append(Tags(title=i, user_id=request.user.id, topic_id=topic_id))
+
+                    Tags.objects.bulk_create(tags_insert_batch)
+
+            return Show.success("修改成功")
+        else:
+            return Show.fail(form.errors)
 
 
 class DeleteTopicView(DeleteView):

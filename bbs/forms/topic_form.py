@@ -8,7 +8,7 @@ class CreateTopicForm(forms.ModelForm):
     class Meta:
         model = Topics
         fields = ['title', 'body', 'category']
-        exclude = ['user', 'create_time']
+        exclude = ['user', 'create_time', 'update_time']
         labels = {
                      "title": "文章标题",
                      "body": "文章内容"
