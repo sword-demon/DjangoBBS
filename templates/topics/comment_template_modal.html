@@ -1,0 +1,34 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-default btn-xs pull-left text-secondary" data-toggle="modal" data-target="#comment-{{ reply.id }}">
+    <i class="fa fa-share"></i>
+</button>
+<!-- Modal -->
+<div class="modal fade" id="comment-{{ reply.id }}" tabindex="-1" role="dialog"
+     aria-labelledby="commentPublishLabel-{{ reply.id }}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="editTaskLabel-{{ reply.id }}">评论</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="commit_comment_{{ reply.id }}">
+                    <input type="hidden" name="pid" value="{{ reply.id }}">
+                    <input type="hidden" name="topic_id" value="{{ reply.topic.id }}">
+                    {% csrf_token %}
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <textarea name="content" id="content" class="form-control" autocomplete="off" placeholder="分享你的见解"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-id="{{ reply.id }}" class="btn_commit_comment btn btn-primary">提交</button>
+                <button type="button" class="btn btn-default btn-raised" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

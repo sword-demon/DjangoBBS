@@ -1,6 +1,6 @@
 <ul class="list-unstyled">
     {% for reply in replies %}
-        <li class="media" name="" id="">
+        <li class="media" id="">
             <div class="media-left">
                 <a href="">
                     <img class="media-object img-thumbnail mr-3" alt="{{ reply.user.username }}"
@@ -15,20 +15,14 @@
                     </a>
                     <!-- 对用户进行回复 -->
                     <span class="meta float-right">
-                          <form action=""
-                                onsubmit="return confirm('确定要删除此评论？');"
-                                method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-default btn-xs pull-left text-secondary">
-                              <i class="far fa-trash-alt"></i>
-                            </button>
-                          </form>
-                        </span>
+                        {% include 'topics/comment_template_modal.html' %}
+                    </span>
                 </div>
                 <div class="reply-content text-secondary">
                     {{ reply.content }}
                 </div>
             </div>
         </li>
+        <div class="reply_area"></div>
     {% endfor %}
 </ul>

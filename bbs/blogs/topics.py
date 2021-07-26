@@ -8,8 +8,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DeleteView
 
 from bbs.forms.topic_form import CreateTopicForm
-from bbs.models import Topics, Tags, Categories
+from bbs.models import Topics, Tags, Categories, Comments
 from utils.json_response import Show
+
 
 
 class TopicView(View):
@@ -22,7 +23,8 @@ class TopicView(View):
         # 获取tags
         tags = Tags.objects.filter(topic_id=topic_id).all()
         # 少用local
-        return render(request, 'topics/show.html', {"topic": topic, "tags": tags})
+        replies = Comments.objects.filter(topic_id=topic_id)
+        return render(request, 'topics/show.html', {"topic": topic, "tags": tags, "replies": replies})
 
 
 class UpdateTopicView(View):

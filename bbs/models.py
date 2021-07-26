@@ -33,7 +33,8 @@ class Categories(models.Model):
 
 
 class Comments(models.Model):
-    pid = models.PositiveIntegerField(default=0)
+    id = models.AutoField(primary_key=True)
+    pid = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField()
     topic = models.ForeignKey(to="Topics", to_field="id", on_delete=models.CASCADE)
     user = models.ForeignKey(to="Users", to_field="id", on_delete=models.CASCADE)

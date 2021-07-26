@@ -28,7 +28,7 @@ class DataRecordMiddleware(MiddlewareMixin):
         request_method = request.method
 
         input_params = []
-        user_id = request.user.id | 1
+        user_id = request.user.id if request.user.id else 1
 
         if request_method == "GET":
             input_params = request.GET.dict()

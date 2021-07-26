@@ -75,7 +75,7 @@
             <div class="card topic-reply mt-4">
                 <div class="card-body">
                     {% include 'topics/_reply_box.html' %}
-                    {#                    {% include 'topics/_reply_list.html' %}#}
+                    {% include 'topics/_reply_list.html' %}
                 </div>
             </div>
 
@@ -85,6 +85,52 @@
 
 {% block js %}
     <script>
+
+        $(document).on("click", ".btn_commit_comment", function () {
+            var id = $(this).data("id");
+            $.post("{% url 'commit' %}", $("#commit_comment_" + id).serialize(), function (res) {
+                if (res.status === 1) {
+                    layer.msg(res.msg, {
+                        icon: 6
+                    }, function () {
+                        window.location.reload();
+                    });
+                } else if (res.status === 2) {
+                    layer.msg(res.msg, {
+                        icon: 5
+                    }, function () {
+                        window.location.href = "{% url 'login' %}"
+                    })
+                } else {
+                    var result;
+                    if (typeof res.msg == "string") {
+                        result = res.msg;
+                    } else {
+                        var str = "";
+                        $.each(res.msg, function (index, item) {
+                            str += "<br>" + item[0]
+                        });
+                        result = str;
+                    }
+                    layer.msg(result, {
+                        icon: 5,
+                        time: 2000
+                    }, function () {
+                        window.location.reload();
+                    })
+                }
+            }, 'json');
+            return false;
+        });
+
+        $(document).on("click", ".btn_reply", function () {
+            request("{% url 'commit' %}", {
+                data: $("#replay_box").serialize(),
+                dataType: "json",
+                type: "POST"
+            });
+        });
+
         $(document).on("click", ".btn_delete_topic", function () {
             var topic_id = $(this).data("topic_id");
             if (!topic_id) {
