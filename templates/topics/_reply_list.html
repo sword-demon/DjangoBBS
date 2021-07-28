@@ -23,6 +23,12 @@
                 </div>
             </div>
         </li>
-        <div class="reply_area"></div>
+        {% if reply.pid_id %}
+            <p class="card-body">
+                {{ reply.pid.user.username }}
+
+                {{ reply.pid.content }}
+            </p>
+        {% endif %}
     {% endfor %}
 </ul>

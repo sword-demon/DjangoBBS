@@ -23,9 +23,7 @@ class TopicView(View):
         # 获取tags
         tags = Tags.objects.filter(topic_id=topic_id).all()
         # 少用local
-        replies = Comments.objects.filter(topic_id=topic_id).values()
-        comments_list = tree_list(list(replies))
-        print(comments_list)
+        replies = Comments.objects.filter(topic_id=topic_id)
         return render(request, 'topics/show.html', {"topic": topic, "tags": tags, "replies": replies})
 
 
