@@ -10,7 +10,7 @@ from django.views.generic import DeleteView
 from bbs.forms.topic_form import CreateTopicForm
 from bbs.models import Topics, Tags, Categories, Comments
 from utils.json_response import Show
-
+from utils.tools import tree_list
 
 
 class TopicView(View):
@@ -23,7 +23,9 @@ class TopicView(View):
         # 获取tags
         tags = Tags.objects.filter(topic_id=topic_id).all()
         # 少用local
-        replies = Comments.objects.filter(topic_id=topic_id)
+        replies = Comments.objects.filter(topic_id=topic_id).values()
+        comments_list = tree_list(list(replies))
+        print(comments_list)
         return render(request, 'topics/show.html', {"topic": topic, "tags": tags, "replies": replies})
 
 

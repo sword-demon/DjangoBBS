@@ -25,26 +25,25 @@ def get_random_set(bits):
     return value_set
 
 
-
-def xTree(datas):
+def tree_list(datas):
     """
     获取树形结构
     """
-    lists=[]
-    tree={}
-    parent_id=''
+    lists = []
+    tree = {}
+    parent_id = ''
     for i in datas:
-        item=i
-        tree[item['id']]=item
-    root=None
+        item = i
+        tree[item['id']] = item
+    root = None
     for i in datas:
-        obj=i
-        if not obj['pid']:
-            root=tree[obj['id']]
+        obj = i
+        if not obj['pid_id']:
+            root = tree[obj['id']]
             lists.append(root)
         else:
-            parent_id=obj['pid']
+            parent_id = obj['pid_id']
             if 'childlist' not in tree[parent_id]:
-                tree[parent_id]['childlist']=[]
+                tree[parent_id]['childlist'] = []
             tree[parent_id]['childlist'].append(tree[obj['id']])
     return lists

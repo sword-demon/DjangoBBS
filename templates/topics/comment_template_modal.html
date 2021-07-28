@@ -15,7 +15,7 @@
             <div class="modal-body">
                 <form id="commit_comment_{{ reply.id }}">
                     <input type="hidden" name="pid" value="{{ reply.id }}">
-                    <input type="hidden" name="topic_id" value="{{ reply.topic.id }}">
+                    <input type="hidden" name="topic_id" value="{{ topic.id }}">
                     {% csrf_token %}
 
                     <div class="form-group row">
