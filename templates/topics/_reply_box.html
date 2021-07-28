@@ -2,7 +2,6 @@
     <form action="" accept-charset="UTF-8" id="replay_box">
         {% csrf_token %}
         <input type="hidden" name="topic_id" value="{{ topic.id }}">
-        <input type="hidden" name="pid" value="0">
         <div class="form-group">
             <textarea class="form-control" id="content" rows="3" placeholder="分享你的见解~" name="content"></textarea>
         </div>

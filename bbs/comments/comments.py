@@ -6,7 +6,8 @@ from utils.json_response import Show
 
 class Comment(View):
     def post(self, request):
-        pid = request.POST.get("pid")
+        pid = request.POST.get("pid", None)
+        print(pid)
         topic_id = request.POST.get("topic_id")
         if not topic_id:
             return Show.fail("参数缺失")
