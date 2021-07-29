@@ -31,6 +31,7 @@ urlpatterns = [
                   path('login/', views.login, name='login'),
                   # 退出
                   path('logout/', views.logout, name='logout'),
+                  path('forget/', views.forget, name='forget_change_pwd'),
                   path('bbs/', include('bbs.urls')),
                   # media配置
                   # re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})

@@ -75,3 +75,27 @@ def logout(request):
     request.session.flush()
 
     return redirect("login")
+
+
+def forget(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "")
+        if not username.strip():
+            return Show.fail("请输入用户名")
+        user_obj = Users.objects.filter(username=username).first()
+        if not user_obj:
+            return Show.fail("该用户不存在")
+        password = request.POST.get("password", "")
+        confirm_password = request.POST.get("confirm_password", "")
+        if not password.strip():
+            return Show.fail("请输入密码")
+        if not confirm_password.strip():
+            return Show.fail("请输入确认密码")
+        if password != confirm_password:
+            return Show.fail("两次密码不一致")
+
+        user_obj.set_password(password)
+        user_obj.save()
+        return Show.success("密码修改成功,前去登录")
+
+    return render(request, 'auth/forget.html')

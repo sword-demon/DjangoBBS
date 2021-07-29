@@ -16,7 +16,7 @@
                     <hr>
                     <div class="media">
                         <div align="center">
-                            <a href="">
+                            <a href="{% url 'blog_center' topic.user.username %}">
                                 <img class="thumbnail img-fluid" src="/media/{{ topic.user.avatar }}" width="300px"
                                      height="300px">
                             </a>
@@ -85,6 +85,32 @@
 
 {% block js %}
     <script>
+
+        window.onload = function () {
+            $.ajax({
+                url: "{% url 'commit' %}",
+                type: "get",
+                data: {
+                    'topic_id': {{ topic.id }}
+                },
+                success: function (res) {
+                    console.log(res);
+                    $.each(res, function (index, comment_obj) {
+                        var pk = comment_obj.pk;
+                        var content = comment_obj.content;
+                        var pid = comment_obj.pid_id;
+                        var s = '<div class="tree_item" comment_id=' + pk + '><span>' + content + '</span></div>';
+
+                        {#if (!pid) {#}
+                        {#    $('.comment_tree').append(s)#}
+                        {#} else {#}
+                        {#    console.log(pid)#}
+                        {#    $('[comment_id=' + pid + ']').append(s)#}
+                        {#}#}
+                    })
+                }
+            })
+        }
 
         $(document).on("click", ".btn_commit_comment", function () {
             var id = $(this).data("id");

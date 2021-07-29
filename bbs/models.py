@@ -44,6 +44,9 @@ class Comments(models.Model):
         verbose_name = '评论表'
         verbose_name_plural = verbose_name
 
+    def children(self):
+        return self.objects.filter(pid=self)
+
 
 class Notifications(models.Model):
     title = models.CharField(max_length=191)

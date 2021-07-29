@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
 
@@ -7,6 +8,19 @@ from utils.json_response import Show
 
 
 class Comment(View):
+
+    def get(self, request):
+        """
+        ajax加载评论内容
+        :param request:
+        :return:
+        """
+        topic_id = request.GET.get("topic_id")
+        if not topic_id:
+            pass
+        data = list(Comments.objects.filter(topic_id=topic_id).values('pk', 'content', 'user_id', 'user__username',
+                                                                      'user__avatar', 'pid_id'))
+        return JsonResponse(data, safe=False)
 
     @method_decorator(check_login, name='post')
     def post(self, request):

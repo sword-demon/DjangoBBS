@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DeleteView
 
 from bbs.forms.topic_form import CreateTopicForm
-from bbs.models import Topics, Tags, Categories, Comments
+from bbs.models import Topics, Tags, Categories, Comments, Users
 from utils.json_response import Show
 from utils.tools import tree_list
 
@@ -23,9 +23,97 @@ class TopicView(View):
         # 获取tags
         tags = Tags.objects.filter(topic_id=topic_id).all()
         # 少用local
-        replies = Comments.objects.filter(topic_id=topic_id).values()
+        replies = Comments.objects.filter(topic_id=topic_id).all()
+        comment_list = self.build_msg(replies)
 
-        return render(request, 'topics/show.html', {"topic": topic, "tags": tags, "replies": replies})
+        comment_tree = self.build_comment_tree(topic)
+        # print(comment_tree, type(comment_tree))
+
+        for k, v in comment_tree.items():
+            print("第一层", k.user.username)
+            for k1, v1 in v.items():
+                print("第二层", k1.user.username)
+                for k2, v2 in v1.items():
+                    print("第三层", k2.user.username)
+                    for k3, v3 in v2.items():
+                        print("第四层", k3.user.username)
+                        for k4, v4 in v3.items():
+                            print("第五层", k4.user.username)
+
+        """
+        ([{<Comments: 54None属实牛逼确实牛逼>: 
+            {<Comments: 654None属实牛逼确实牛逼666>: 
+                {<Comments: 7654None属实牛逼确实牛逼666确实叼>: 
+                    {<Comments: 87654None属实牛逼确实牛逼666确实叼无解的游戏>: {}}}}}])
+
+        """
+
+        return render(request, 'topics/show.html',
+                      {"topic": topic, "tags": tags, "replies": replies, 'comments': comment_tree})
+
+    def insert_comment_node(self, com_tree, comment):
+        for parent, v in com_tree.items():
+            if parent == comment.pid:
+                # print("find %s's parent %s" % (comment.user.username, parent))
+                com_tree[parent][comment] = {}
+            else:
+                # print("haven't found %s's parent, start looking into further layer..." % comment)
+                self.insert_comment_node(com_tree[parent], comment)
+
+    def build_comment_tree(self, topic_obj):
+        all_comments = topic_obj.comments_set.select_related().order_by('id')
+        # print(all_comments)
+        comment_tree = {}
+        for comment in all_comments:
+            if comment.pid is None:
+                # print("pid is None", comment)
+                comment_tree[comment] = {}
+            else:
+                # print("pid is not None", comment_tree, comment)
+                self.insert_comment_node(comment_tree, comment)
+
+        # for k, v in comment_tree.items():
+        #     print(k, v)
+
+        return comment_tree
+
+    def get_comment_list(self, comment_list):
+        # 把msg增加一个children键值对，存放它的儿子们
+        ret = []
+        comment_dic = {}
+        for comment_obj in comment_list:
+            comment_obj['children'] = []
+            comment_dic[comment_obj['pk']] = comment_obj
+
+        for comment in comment_list:
+            p_obj = comment_dic.get(comment['pid'])
+            if not p_obj:
+                ret.append(comment)
+            else:
+                p_obj['children'].append(comment)
+        return ret
+
+    def build_msg(self, comment_obj):
+        """
+        把数据造成列表里边套字典的形式
+        :param comment_obj:
+        :return:
+        """
+        msg = []
+        for comment in comment_obj:
+            data = {}
+            if comment.pid:
+                data['pid'] = comment.pid.id
+                data['username'] = Comments.objects.get(pk=comment.pid.id).user.username
+            else:
+                data['pid'] = None
+                data['username'] = None
+
+            data['pk'] = comment.pk
+            data['content'] = comment.content
+            data['username'] = comment.user.username
+            msg.append(data)
+        return msg
 
 
 class UpdateTopicView(View):
