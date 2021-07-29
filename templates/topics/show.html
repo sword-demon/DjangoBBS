@@ -101,13 +101,16 @@
                         var pid = comment_obj.pid_id;
                         var s = '<div class="tree_item" comment_id=' + pk + '><span>' + content + '</span></div>';
 
-                        {#if (!pid) {#}
-                        {#    $('.comment_tree').append(s)#}
-                        {#} else {#}
-                        {#    console.log(pid)#}
-                        {#    $('[comment_id=' + pid + ']').append(s)#}
-                        {#}#}
-                    })
+                        /*
+                        if (!pid) {
+                            $('.comment_tree').append(s)
+                        } else {
+                            console.log(pid)
+                            $('[comment_id=' + pid + ']').append(s)
+                        }
+                        */
+                         */
+                    });
                 }
             })
         }
