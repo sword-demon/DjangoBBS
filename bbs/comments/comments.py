@@ -1,10 +1,14 @@
+from django.utils.decorators import method_decorator
 from django.views import View
 
 from bbs.models import Comments
+from utils.decorator import check_login
 from utils.json_response import Show
 
 
 class Comment(View):
+
+    @method_decorator(check_login, name='post')
     def post(self, request):
         pid = request.POST.get("pid", None)
         print(pid)

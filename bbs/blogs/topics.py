@@ -23,11 +23,16 @@ class TopicView(View):
         # 获取tags
         tags = Tags.objects.filter(topic_id=topic_id).all()
         # 少用local
+<<<<<<< HEAD
         replies = Comments.objects.filter(topic_id=topic_id).values()
         comments_list = tree_list(list(replies))
         print(comments_list)
         return render(request, 'topics/show.html',
                       {"topic": topic, "tags": tags, "replies": replies, 'comments': comments_list})
+=======
+        replies = Comments.objects.filter(topic_id=topic_id)
+        return render(request, 'topics/show.html', {"topic": topic, "tags": tags, "replies": replies})
+>>>>>>> e8b077be6e55e2a401aa584b1cbc4956583b5055
 
 
 class UpdateTopicView(View):

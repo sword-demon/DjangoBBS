@@ -18,6 +18,9 @@ logger_error = logging.getLogger("api_error")
 
 
 class DataRecordMiddleware(MiddlewareMixin):
+    """
+    全局异常日志记录
+    """
 
     def get_request_method(self, request):
         return request.get_full_path()
@@ -52,6 +55,10 @@ class DataRecordMiddleware(MiddlewareMixin):
 
 
 class TopicViewObserver(MiddlewareMixin):
+    """
+    文章阅读观察者
+    阅读量+1
+    """
 
     def process_request(self, request):
         from django.urls import resolve

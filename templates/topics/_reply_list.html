@@ -23,5 +23,15 @@
                 </div>
             </div>
         </li>
+<<<<<<< HEAD
+=======
+        {% if reply.pid_id %}
+            <p class="card-body">
+                {{ reply.pid.user.username }}
+
+                {{ reply.pid.content }}
+            </p>
+        {% endif %}
+>>>>>>> e8b077be6e55e2a401aa584b1cbc4956583b5055
     {% endfor %}
 </ul>
