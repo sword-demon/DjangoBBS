@@ -26,7 +26,8 @@ class TopicView(View):
         replies = Comments.objects.filter(topic_id=topic_id).values()
         comments_list = tree_list(list(replies))
         print(comments_list)
-        return render(request, 'topics/show.html', {"topic": topic, "tags": tags, "replies": replies})
+        return render(request, 'topics/show.html',
+                      {"topic": topic, "tags": tags, "replies": replies, 'comments': comments_list})
 
 
 class UpdateTopicView(View):
