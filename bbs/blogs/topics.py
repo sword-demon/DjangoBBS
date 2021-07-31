@@ -29,25 +29,6 @@ class TopicView(View):
         comment_tree = self.build_comment_tree(topic)
         # print(comment_tree, type(comment_tree))
 
-        for k, v in comment_tree.items():
-            print("第一层", k.user.username)
-            for k1, v1 in v.items():
-                print("第二层", k1.user.username)
-                for k2, v2 in v1.items():
-                    print("第三层", k2.user.username)
-                    for k3, v3 in v2.items():
-                        print("第四层", k3.user.username)
-                        for k4, v4 in v3.items():
-                            print("第五层", k4.user.username)
-
-        """
-        ([{<Comments: 54None属实牛逼确实牛逼>: 
-            {<Comments: 654None属实牛逼确实牛逼666>: 
-                {<Comments: 7654None属实牛逼确实牛逼666确实叼>: 
-                    {<Comments: 87654None属实牛逼确实牛逼666确实叼无解的游戏>: {}}}}}])
-
-        """
-
         return render(request, 'topics/show.html',
                       {"topic": topic, "tags": tags, "replies": replies, 'comments': comment_tree})
 

@@ -1,54 +1,77 @@
-<ul class="list-unstyled">
-    {% for reply in replies %}
-        <li class="media ml-5" id="">
-            <div class="media-left">
-                <a href="{% url 'blog_center' reply.user.username %}">
-                    <img class="media-object img-thumbnail mr-3" alt="{{ reply.user.username }}"
-                         src="/media/{{ reply.user.avatar }}" style="width:48px;height:48px;"/>
-                </a>
-            </div>
-
-            <div class="media-body">
-                <div class="media-heading mt-0 mb-1 text-secondary">
-                    <a href="{% url 'blog_center' reply.user.username %}" title="{{ reply.user.username }}">
-                        {{ reply.user.username }}
-                    </a>
-                    <!-- 对用户进行回复 -->
-                    <span class="meta float-right">
-                        {% include 'topics/comment_template_modal.html' %}
-                    </span>
-                </div>
-                <div class="reply-content text-secondary">
-                    {{ reply.content }}
-                </div>
-            </div>
-        </li>
-    {% endfor %}
-</ul>
-
-<ul>
-    {% for k1, comment in comments.items %}
+<!-- Contenedor Principal -->
+<div class="comments-container">
+    <h1>评论列表</h1>
+    <ul id="comments-list" class="comments-list">
         <li>
-            {{ k1.user.username }} - {{ k1.content }}
+            <div class="comment-main-level">
+                <!-- Avatar -->
+                <div class="comment-avatar"><img src="" alt="">
+                </div>
+                <!-- Contenedor del Comentario -->
+                <div class="comment-box">
+                    <div class="comment-head">
+                        <h6 class="comment-name by-author"><a href="#">Agustin Ortiz</a></h6>
+                        <i class="fa fa-reply"></i>
+                    </div>
+                    <div class="comment-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium
+                        vitae, praesentium optio, sapiente distinctio illo?
+                    </div>
+                </div>
+            </div>
+            <!-- Respuestas de los comentarios -->
+            <ul class="comments-list reply-list">
+                <li>
+                    <!-- Avatar -->
+                    <div class="comment-avatar"><img src="/assets/coolgirl.jpg" alt="">
+                    </div>
+                    <!-- Contenedor del Comentario -->
+                    <div class="comment-box">
+                        <div class="comment-head">
+                            <h6 class="comment-name"><a href="#">Lorena Rojero</a></h6>
+                            <i class="fa fa-reply"></i>
+                        </div>
+                        <div class="comment-content">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure
+                            laudantium vitae, praesentium optio, sapiente distinctio illo?
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <!-- Avatar -->
+                    <div class="comment-avatar"><img src="/assets/coolboy.jpg" alt="">
+                    </div>
+                    <!-- Contenedor del Comentario -->
+                    <div class="comment-box">
+                        <div class="comment-head">
+                            <h6 class="comment-name by-author"><a href="#">Agustin Ortiz</a></h6>
+                            <i class="fa fa-reply"></i>
+                        </div>
+                        <div class="comment-content">
+                            评论内容
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </li>
-        <ul>
-            {% for k2, v2 in comment.items %}
-                <li>{{ k2.user.username }} - {{ k2.content }}</li>
-                <ul>
-                    {% for k3, v3 in v2.items %}
-                        <li>{{ k3.user.username }} - {{ k3.content }}</li>
-                        <ul>
-                            {% for k4, v4 in v3.items %}
-                                <li>{{ k4.user.username }} - {{ k4.content }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
-        </ul>
-    {% endfor %}
-</ul>
 
-<hr>
-
-<div class="comment_tree"></div>
+        <li>
+            <div class="comment-main-level">
+                <!-- Avatar -->
+                <div class="comment-avatar"><img src="" alt="">
+                </div>
+                <!-- Contenedor del Comentario -->
+                <div class="comment-box">
+                    <div class="comment-head">
+                        <h6 class="comment-name"><a href="#">Lorena Rojero</a></h6>
+                        <i class="fa fa-reply"></i>
+                    </div>
+                    <div class="comment-content">
+                        评论内容
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
