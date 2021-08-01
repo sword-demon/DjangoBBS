@@ -22,6 +22,7 @@ urlpatterns = [
 
     # 我的博客
     path('blog/<str:username>/', my_blogs.MyBlog.as_view(), name='blog_center'),
+    path('blog/<str:username>/archive/<slug:slug>', my_blogs.MyBlog.as_view(), name='blog_center'),
     # 新建博文
     path('topic/create/', my_blogs.CreateTopic.as_view(), name='create_topic'),
     # 点赞踩

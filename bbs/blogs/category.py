@@ -1,7 +1,11 @@
+from django.core.paginator import Paginator, EmptyPage
 from django.views import View
 from django.shortcuts import render
 
 from bbs.models import Topics, Categories
+
+
+# from utils.page import Pagination
 
 
 class CategoryView(View):
@@ -20,5 +24,25 @@ class CategoryView(View):
             category_id = 1
         topics = Topics.objects.filter(category_id=category_id).order_by(order).all()
         category = Categories.objects.filter(id=category_id).first()
+        current_page = int(request.GET.get("page", 1))
 
-        return render(request, "root/index.html", {"topics": topics, "category": category, "order": order})
+        paginator = Paginator(topics, 2)
+
+        if paginator.num_pages > 11:
+            if current_page - 5 < 1:
+                page_range = range(1, 11)
+            elif current_page + 5 > paginator.num_pages:
+                page_range = range(paginator.num_pages - 11, paginator.num_pages + 1)
+            else:
+                page_range = range(current_page - 5, current_page + 5)
+        else:
+            page_range = paginator.page_range
+
+        try:
+            current = paginator.page(current_page)
+        except EmptyPage as e:
+            current = paginator.page(1)
+
+        return render(request, "root/index.html",
+                      {"topics": current, "category": category, "order": order, "page_range": page_range,
+                       "length": len(topics)})

@@ -2,6 +2,7 @@ import time
 
 from django.db import transaction
 from django.db.models import Count
+from django.db.models.functions import TruncMonth
 from django.shortcuts import render
 
 # Create your views here.
@@ -20,10 +21,23 @@ from utils.json_response import Show
 
 class MyBlog(View):
 
+    def string_to_timestamp(self, str_date):
+        time_array = time.strptime(str_date, "%Y-%m")
+        time_stamp = int(float(time.mktime(time_array)))
+        print(time_stamp)
+        return time_stamp
+
     @method_decorator(check_login, name='get')
-    def get(self, request, username):
-        # 根据用户名查询该用户的一些数据
-        topics = Topics.objects.filter(user__username=username).all()
+    def get(self, request, username, slug=None):
+        if slug:
+            # search_date = self.string_to_timestamp(slug)
+            topics = Topics.objects.filter(user__username=username).extra(where=
+            [
+                "DATE_FORMAT(FROM_UNIXTIME(create_time), '%%Y-%%m')='" + slug + "'"])
+            print(request.path)
+        else:
+            # 根据用户名查询该用户的一些数据
+            topics = Topics.objects.filter(user__username=username).all()
         for topic in topics:
             topic.like_num = Likes.objects.filter(topic_id=topic.id, is_like=1).count()
             topic.hate_num = Likes.objects.filter(topic_id=topic.id, is_like=0).count()
@@ -32,6 +46,13 @@ class MyBlog(View):
         likes = Likes.objects.filter(topic_id__in=topics.values("id"), is_like=1).count()
         collects = Collects.objects.filter(user_id=bloger.id).count()
         tags = Tags.objects.filter(user_id=bloger.id)
+        date_list = Topics.objects.filter(user__username=username).extra(
+            select={"y_m_date": "DATE_FORMAT(FROM_UNIXTIME(create_time),'%%Y-%%m')"}).values(
+            "y_m_date").annotate(c=Count("id")).values("y_m_date", "c")
+        # 不适合时间戳
+        # date_list = Topics.objects.filter(user__username=username).annotate(month=TruncMonth('create_time')).values(
+        #     "month").annotate(c=Count('id')).values("month", "c")
+        # print(date_list)
         return render(request, 'my_blogs/blog_center.html', locals())
 
 

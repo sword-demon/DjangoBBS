@@ -36,6 +36,29 @@
                     {% include 'topics/_topic_list.html' %}
                     <!-- 分页 -->
                     <div class="mt-5">
+                        {% if length %}
+                            <ul class="pagination">
+                                {% if current.has_previous %}
+                                    <li><a href="?page={{ current_page|add:-1 }}">上一页</a></li>
+                                {% else %}
+                                    <li class="disabled"><a href="?page={{ current_page|add:-1 }}">上一页</a></li>
+                                {% endif %}
+
+                                {% for item in page_range %}
+                                    {% if current_page == itme %}
+                                        <li class="active"><a href="?page={{ item }}">{{ item }}</a></li>
+                                    {% else %}
+                                        <li><a href="?page={{ item }}">{{ item }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if current.has_next %}
+                                    <li><a href="?page={{ current_page|add:+1 }}">下一页</a></li>
+                                {% else %}
+                                    <li class="disabled"><a href="?page={{ current_page|add:+1 }}">下一页</a></li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
                     </div>
                 </div>
             </div>

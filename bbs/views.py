@@ -2,12 +2,14 @@ import logging
 
 from django.contrib import auth
 from django.contrib.auth import authenticate
+from django.core.paginator import EmptyPage, Paginator
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from bbs.forms.user_form import RegisterForm, LoginForm
 from bbs.models import Users, Topics
 from utils.json_response import Show
+# from utils.page import Pagination
 from utils.tools import get_ip
 
 
@@ -17,8 +19,26 @@ def index(request):
     if order not in ["-create_time", "-view_count"]:
         order = "-create_time"
     topics = Topics.objects.all().order_by(order)
-    # print(topics.query)
-    return render(request, 'root/index.html', {"topics": topics, "order": order})
+    current_page = int(request.GET.get("page", 1))
+
+    paginator = Paginator(topics, 2)
+
+    if paginator.num_pages > 11:
+        if current_page - 5 < 1:
+            page_range = range(1, 11)
+        elif current_page + 5 > paginator.num_pages:
+            page_range = range(paginator.num_pages - 11, paginator.num_pages + 1)
+        else:
+            page_range = range(current_page - 5, current_page + 5)
+    else:
+        page_range = paginator.page_range
+
+    try:
+        current = paginator.page(current_page)
+    except EmptyPage as e:
+        current = paginator.page(1)
+    return render(request, 'root/index.html',
+                  {"topics": current, "order": order, "page_range": page_range, "length": len(topics)})
 
 
 def reg(request):
