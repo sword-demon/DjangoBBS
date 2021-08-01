@@ -1,5 +1,8 @@
 # Django 开发 BBS + Blog
 
+## github地址
+https://github.com/sword-demon/djangoBBS
+
 ## 构建项目
 
 ```bash
