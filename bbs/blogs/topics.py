@@ -23,14 +23,12 @@ class TopicView(View):
         # 获取tags
         tags = Tags.objects.filter(topic_id=topic_id).all()
         # 少用local
-        replies = Comments.objects.filter(topic_id=topic_id).all()
-        comment_list = self.build_msg(replies)
-
-        comment_tree = self.build_comment_tree(topic)
-        # print(comment_tree, type(comment_tree))
+        # replies = Comments.objects.filter(topic_id=topic_id).all()
+        # comment_list = self.build_msg(replies)
+        # comment_tree = self.build_comment_tree(topic)
 
         return render(request, 'topics/show.html',
-                      {"topic": topic, "tags": tags, "replies": replies, 'comments': comment_tree})
+                      {"topic": topic, "tags": tags})
 
     def insert_comment_node(self, com_tree, comment):
         for parent, v in com_tree.items():
@@ -120,6 +118,7 @@ class UpdateTopicView(View):
         tags = request.POST.get("tags")
         tags_list = tags.split(",")
         if form.is_valid():
+            # 开启事务
             with transaction.atomic():
                 record = form.save(commit=False)
                 record.user = request.user
@@ -133,6 +132,7 @@ class UpdateTopicView(View):
                     for i in tags_list:
                         tags_insert_batch.append(Tags(title=i, user_id=request.user.id, topic_id=topic_id))
 
+                    # 批量添加标签
                     Tags.objects.bulk_create(tags_insert_batch)
 
             return Show.success("修改成功")
@@ -152,5 +152,10 @@ class DeleteTopicView(DeleteView):
         if not topic_id:
             return Show.fail("文章id参数缺失")
 
-        Topics.objects.filter(id=int(topic_id)).delete()
-        return Show.success("删除成功")
+        try:
+            Topics.objects.filter(id=int(topic_id)).delete()
+            return Show.success("删除成功")
+        except Exception as e:
+            # 发生异常，中间件会记录异常日志
+            print(str(e))
+            return Show.fail("网络异常，请稍后再试!")

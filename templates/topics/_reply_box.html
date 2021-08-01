@@ -2,8 +2,10 @@
     <form action="" accept-charset="UTF-8" id="replay_box">
         {% csrf_token %}
         <input type="hidden" name="topic_id" value="{{ topic.id }}">
+        <input type="hidden" name="pid" value="">
+        <input type="hidden" name="level" value="">
         <div class="form-group">
-            <textarea class="form-control" id="content" rows="3" placeholder="分享你的见解~" name="content"></textarea>
+            <textarea class="form-control" id="content" rows="3" placeholder="" name="content"></textarea>
         </div>
         <button type="button" class="btn_reply btn btn-primary btn-sm">
             <i class="fa fa-share mr-1"></i> 提交评论

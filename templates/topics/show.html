@@ -357,6 +357,9 @@
 
         </div>
     </div>
+
+    <!-- 加载评论模板 -->
+    {% include 'topics/comment_template.html' %}
 {% endblock %}
 
 {% block js %}
@@ -371,27 +374,78 @@
                     'topic_id': {{ topic.id }}
                 },
                 success: function (res) {
+                    var author_user_id = {{ topic.user.id }};
                     console.log(res);
                     $.each(res, function (index, comment_obj) {
                         var pk = comment_obj.pk;
                         var content = comment_obj.content;
                         var pid = comment_obj.pid_id;
-                        var s = '<li><div class="comment-main-level"><div class="comment-avatar"><img src="/assets/coolgirl.jpg" alt=""></div><div class="comment-box"> <div class="comment-head"> <h6 class="comment-name"><a href="#">Lorena Rojero</a></h6> <i class="fa fa-reply"></i> </div> <div class="comment-content"> </div> </div> </div></li>';
+                        var avatar = comment_obj.user__avatar;
+                        var username = comment_obj.user__username;
+                        var user_id = comment_obj.user_id;
+                        var level_path = comment_obj.level;
+                        var parent_username = comment_obj.parent_username;
 
-                        /*
+                        // 获取html字符串模板
+                        var template = $('#comment_template').html();
+                        // 将html字符串转换为dom对象
+                        var dom = $(template);
+
+                        dom.find(".reply_pid_btn").attr("data-username", username);
+                        dom.find(".reply_pid_btn").attr("data-pid", pk);
+
+                        var template_html;
                         if (!pid) {
-                            $('.comment_tree').append(s)
+                            dom.attr("comment_id", pk);
+                            dom.find("img").attr("src", "/media/" + avatar);
+                            if (author_user_id == user_id) {
+                                dom.find(".comment-name").addClass("by-author");
+                            }
+                            dom.find("#comment_user").html(username)
+                            dom.find(".comment-content").html(content)
+                            dom.find("#is_root").addClass("comment-main-level");
+                            template_html = dom.prop("outerHTML");
+                            $('#comments-list').append(template_html)
                         } else {
-                            console.log(pid)
-                            $('[comment_id=' + pid + ']').append(s)
+                            var pids = level_path.split("_")
+                            dom.attr("comment_id", pk);
+                            dom.find("img").attr("src", "/media/" + avatar);
+                            if (author_user_id == user_id) {
+                                dom.find(".comment-name").addClass("by-author");
+                            }
+                            dom.find("#comment_user").html(username)
+                            dom.find(".comment-content").html(content)
+                            dom.find("#reply_user").html('@' + parent_username);
+                            template_html = dom.prop("outerHTML");
+                            var tmp = '<ul class="comments-list reply-list">';
+                            var tmp_end = '</ul>';
+
+                            var result = tmp + template_html + tmp_end;
+
+                            if (pids.length >= 2) {
+                                // 找到父类的用户名称
+                                $('[comment_id=' + pids[0] + ']').append(result);
+                            } else {
+                                $('[comment_id=' + pid + ']').append(result);
+                            }
                         }
-                        */
                     });
                 }
-            })
+            });
+            return false;
         }
 
-        // 回复根评论以及子评论
+        function reply(obj) {
+            {#console.log($(obj).data("pid"));#}
+            {#console.log($(obj).data("username"));#}
+
+            $(".reply-box #content").attr("placeholder", '@' + $(obj).data("username"));
+            $(".reply-box").find('[name=pid]').val($(obj).data("pid"));
+            $(".reply-box").find('[name=level]').val($(obj).data("pid"));
+        }
+
+        // 回复根评论以及子评论 第一版作废
+        /*
         $(document).on("click", ".btn_commit_comment", function () {
             var id = $(this).data("id");
             $.post("{% url 'commit' %}", $("#commit_comment_" + id).serialize(), function (res) {
@@ -428,6 +482,7 @@
             }, 'json');
             return false;
         });
+        */
 
         // 根评论
         $(document).on("click", ".btn_reply", function () {

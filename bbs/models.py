@@ -38,6 +38,7 @@ class Comments(models.Model):
     content = models.TextField()
     topic = models.ForeignKey(to="Topics", to_field="id", on_delete=models.CASCADE)
     user = models.ForeignKey(to="Users", to_field="id", on_delete=models.CASCADE)
+    level = models.CharField(max_length=255, verbose_name='评论层级', default='')
 
     class Meta:
         db_table = 'comments'
