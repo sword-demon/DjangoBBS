@@ -38,7 +38,7 @@ def index(request):
     except EmptyPage as e:
         current = paginator.page(1)
     return render(request, 'root/index.html',
-                  {"topics": current, "order": order, "page_range": page_range, "length": len(topics)})
+                  {"topics": current, "order": order, "page_range": page_range, "length": len(topics), "current_page": current_page})
 
 
 def reg(request):

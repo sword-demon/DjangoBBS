@@ -45,28 +45,6 @@
 
 {% block js %}
     <script>
-        $(document).on("click", ".btn_like", function () {
-            var topic_id = $(this).data("topic_id");
-            request("{% url 'like' %}", {
-                data: {
-                    "topic_id": topic_id,
-                    "csrfmiddlewaretoken": "{{ csrf_token }}",
-                },
-                dataType: "json",
-                type: "POST"
-            });
-        });
 
-        $(document).on("click", ".btn_hate", function () {
-            var topic_id = $(this).data("topic_id");
-            request("{% url 'hate' %}", {
-                data: {
-                    "topic_id": topic_id,
-                    "csrfmiddlewaretoken": "{{ csrf_token }}",
-                },
-                dataType: "json",
-                type: "POST"
-            });
-        });
     </script>
 {% endblock %}

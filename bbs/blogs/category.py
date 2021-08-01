@@ -45,4 +45,4 @@ class CategoryView(View):
 
         return render(request, "root/index.html",
                       {"topics": current, "category": category, "order": order, "page_range": page_range,
-                       "length": len(topics)})
+                       "length": len(topics), "current_page": current_page})
