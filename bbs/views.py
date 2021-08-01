@@ -21,7 +21,7 @@ def index(request):
     topics = Topics.objects.all().order_by(order)
     current_page = int(request.GET.get("page", 1))
 
-    paginator = Paginator(topics, 2)
+    paginator = Paginator(topics, 20)
 
     if paginator.num_pages > 11:
         if current_page - 5 < 1:
