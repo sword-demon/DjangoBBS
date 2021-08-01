@@ -167,7 +167,9 @@ topics = Topics.objects.filter(user__username=username).extra(where=
 
 
 ## 后续添加
-我还设计了一个收藏表，暂时没有加上这个功能，后续有时间加上。。。
+1. 我还设计了一个收藏表，暂时没有加上这个功能，后续有时间加上。。。
+2. 还设计了一个通知的表，意在提交评论的时候通知一下用户。后续优化
+
 
 ## SQL
 ```sql
