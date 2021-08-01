@@ -166,6 +166,9 @@ topics = Topics.objects.filter(user__username=username).extra(where=
 在`js`进行判断层级超过2或等于2时，都`append`到当前的最高的父级下。不过就是加了点区别，下面都有`@`谁来表示你是回复的谁。
 
 
+## 后续添加
+我还设计了一个收藏表，暂时没有加上这个功能，后续有时间加上。。。
+
 ## SQL
 ```sql
 /*
