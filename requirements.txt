@@ -1,4 +1,4 @@
-requests==2.25.1
-PyMySQL==0.10.1
 Django==2.2
+requests==2.25.1
+PyMySQL==1.0.2
 django_ckeditor==6.1.0
