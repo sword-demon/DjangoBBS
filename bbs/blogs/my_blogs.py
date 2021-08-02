@@ -8,6 +8,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.utils.decorators import method_decorator
 from django.views import View
+from ratelimit.decorators import ratelimit
 
 from bbs.forms.topic_form import CreateTopicForm
 from bbs.models import Topics, Users, Tags, Likes, Comments, Collects
@@ -87,6 +88,7 @@ class CreateTopic(View):
             return Show.fail(create_topic_form.errors)
 
 
+@check_login
 def like(request):
     if request.method == "POST":
         topic_id = request.POST.get("topic_id")
@@ -101,6 +103,7 @@ def like(request):
         return Show.fail("请求方法异常")
 
 
+@check_login
 def hate(request):
     if request.method == "POST":
         topic_id = request.POST.get("topic_id")

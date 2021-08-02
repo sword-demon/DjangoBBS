@@ -1,4 +1,5 @@
 from django.urls import path
+from ratelimit.decorators import ratelimit
 
 from bbs.comments import comments
 from bbs.users import users_view
@@ -26,7 +27,7 @@ urlpatterns = [
     # 新建博文
     path('topic/create/', my_blogs.CreateTopic.as_view(), name='create_topic'),
     # 点赞踩
-    path('like/', my_blogs.like, name='like'),
-    path('hate/', my_blogs.hate, name='hate'),
+    path('like/', ratelimit(key='ip', method='POST', rate='10/s', block=True)(my_blogs.like), name='like'),
+    path('hate/', ratelimit(key='ip', method='POST', rate='10/s', block=True)(my_blogs.hate), name='hate'),
     path('comment/', comments.Comment.as_view(), name='commit'),
 ]

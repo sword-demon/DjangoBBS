@@ -408,6 +408,7 @@
 
                         dom.find(".reply_pid_btn").attr("data-username", username);
                         dom.find(".reply_pid_btn").attr("data-pid", pk);
+                        dom.find("#comment_user").attr("href", "/bbs/blog/" + username)
 
                         var template_html;
                         if (!pid) {
