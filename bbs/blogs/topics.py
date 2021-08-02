@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DeleteView
 
 from bbs.forms.topic_form import CreateTopicForm
-from bbs.models import Topics, Tags, Categories, Comments, Users
+from bbs.models import Topics, Tags, Categories, Comments, Users, Likes
 from utils.json_response import Show
 from utils.tools import tree_list
 
@@ -27,8 +27,11 @@ class TopicView(View):
         # comment_list = self.build_msg(replies)
         # comment_tree = self.build_comment_tree(topic)
 
+        like_num = Likes.objects.filter(topic_id=topic.id, is_like=1).count()
+        hate_num = Likes.objects.filter(topic_id=topic.id, is_like=0).count()
+
         return render(request, 'topics/show.html',
-                      {"topic": topic, "tags": tags})
+                      {"topic": topic, "tags": tags, "like_num": like_num, "hate_num": hate_num})
 
     def insert_comment_node(self, com_tree, comment):
         for parent, v in com_tree.items():

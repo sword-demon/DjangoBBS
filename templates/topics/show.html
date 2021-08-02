@@ -356,18 +356,26 @@
             </div>
         </div>
         <div class="col-sm-1 col-md-1">
-            <ul class="list-group" style="z-index: 20000;position: fixed;">
+            <ul class="list-group" style="z-index: 100;position: fixed;">
                 <li class="list-group-item">
                     <a class="btn btn-sm btn_like"
-                       href="javascript:;" data-topic_id="{{ topic.id }}"><i
+                       href="javascript:;" data-topic_id="{{ topic.id }}" title="点赞"><i
                             class="fa fa-thumbs-o-up"></i>
                     </a>
+                    <div style="display: block;" class="badge">{{ like_num }}</div>
                 </li>
                 <li class="list-group-item">
                     <a class="btn btn-sm btn_hate"
-                       href="javascript:;" data-topic_id="{{ topic.id }}"><i
+                       href="javascript:;" data-topic_id="{{ topic.id }}" title="踩"><i
                             class="fa fa-thumbs-o-down"></i>
                     </a>
+                    <div style="display: block;" class="badge">{{ hate_num }}</div>
+                </li>
+                <li class="list-group-item">
+                    <a href="javascript:;" class="btn btn-sm btn_collect" data-topic_id="{{ topic.id }}" title="收藏">
+                        <i class="fa fa-heart"></i>
+                    </a>
+                    <div style="display: block;" class="badge">1</div>
                 </li>
             </ul>
         </div>

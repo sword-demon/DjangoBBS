@@ -5,6 +5,7 @@ from django.views import View
 from bbs.models import Comments
 from utils.decorator import check_login
 from utils.json_response import Show
+from bs4 import BeautifulSoup
 
 
 class Comment(View):
@@ -57,7 +58,15 @@ class Comment(View):
         content = request.POST.get("content", "")
         if not content:
             return Show.fail("请填写评论内容")
-        comment_obj = Comments.objects.create(topic_id=int(topic_id), user_id=request.user.id, content=content,
+        soup = BeautifulSoup(content, 'html.parser')
+        for tag in soup.find_all():  # 获取标签字符串所有的标签对象
+            # print(tag.name)
+            if tag.name == "script":
+                # 针对script标签，直接删除标签
+                tag.decompose()
+        if not content:
+            return Show.fail("请填写合法的评论内容")
+        comment_obj = Comments.objects.create(topic_id=int(topic_id), user_id=request.user.id, content=str(soup),
                                               pid_id=pid, level=level)
         if comment_obj:
             return Show.success("提交成功")
