@@ -4,6 +4,7 @@ from djangoBBS.settings import BASE_DIR
 
 DATABASES = {
     'default': {
+        # 写 (主机)
         'ENGINE': 'django.db.backends.mysql',  # 默认是sqllite3,改为mysql
         # 创建空库后执行 python manage.py makemigrations
         # 生成迁移文件app/migrations/0001_initial.py
@@ -15,6 +16,15 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '1',
         'PORT': '3306'
+    },
+    'slave': {
+        # 读 (从机)
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': '',
+        'NAME': 'django_bbs',
     }
 }
 
@@ -29,3 +39,6 @@ BASE_URL = '生产环境的域名地址'
 
 # 设置默认头像
 DEFAULT_BLANK_AVATAR = 'https://wxvirus.gitee.io/medias/avatar.jpg'
+
+# 配置数据库读写路由
+DATABASE_ROUTERS = ['djangoBBS.utils.db_router.MasterSlaveDBRouter']

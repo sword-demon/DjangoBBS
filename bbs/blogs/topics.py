@@ -3,12 +3,14 @@ import time
 from django.db import transaction
 from django.http import QueryDict
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DeleteView
 
 from bbs.forms.topic_form import CreateTopicForm
 from bbs.models import Topics, Tags, Categories, Comments, Users, Likes
+from utils.decorator import check_login
 from utils.json_response import Show
 from utils.tools import tree_list
 
@@ -110,6 +112,7 @@ class UpdateTopicView(View):
                 tags_value += item["title"] + ","
         return render(request, 'topics/edit.html', {"topic": topic, "tags_value": tags_value, "categories": categories})
 
+    @method_decorator(check_login, name='post')
     def post(self, request):
         topic_id = request.POST.get("id", 0)
         if not topic_id:
