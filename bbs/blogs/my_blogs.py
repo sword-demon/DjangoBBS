@@ -8,7 +8,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.utils.decorators import method_decorator
 from django.views import View
-from ratelimit.decorators import ratelimit
+# from ratelimit.decorators import ratelimit
 
 from bbs.forms.topic_form import CreateTopicForm
 from bbs.models import Topics, Users, Tags, Likes, Comments, Collects
@@ -30,23 +30,33 @@ class MyBlog(View):
 
     @method_decorator(check_login, name='get')
     def get(self, request, username, slug=None):
+        """
+        我的博文
+        :param request:
+        :param username: 用户名
+        :param slug: 日期参数，查询归档
+        :return:
+        """
         if slug:
             # search_date = self.string_to_timestamp(slug)
             topics = Topics.objects.filter(user__username=username).extra(where=
             [
                 "DATE_FORMAT(FROM_UNIXTIME(create_time), '%%Y-%%m')='" + slug + "'"])
-            print(request.path)
+            # print(request.path)
         else:
             # 根据用户名查询该用户的一些数据
             topics = Topics.objects.filter(user__username=username).all()
         for topic in topics:
-            topic.like_num = Likes.objects.filter(topic_id=topic.id, is_like=1).count()
-            topic.hate_num = Likes.objects.filter(topic_id=topic.id, is_like=0).count()
-            topic.comment_num = Comments.objects.filter(topic_id=topic.id).count()
-        bloger = Users.objects.filter(username=username).first()
-        likes = Likes.objects.filter(topic_id__in=topics.values("id"), is_like=1).count()
-        collects = Collects.objects.filter(user_id=bloger.id).count()
-        tags = Tags.objects.filter(user_id=bloger.id)
+            topic.like_num = Likes.objects.filter(topic_id=topic.id, is_like=1).count()  # 文章点赞数
+            topic.hate_num = Likes.objects.filter(topic_id=topic.id, is_like=0).count()  # 文章踩数
+            topic.comment_num = Comments.objects.filter(topic_id=topic.id).count()  # 文章评论数
+        bloger = Users.objects.filter(username=username).first()  # 当前博客主
+        likes = Likes.objects.filter(topic_id__in=topics.values("id"), is_like=1).count()  # 获取当前用户的所有的点赞数
+        collects = Collects.objects.filter(user_id=bloger.id).count()  # 获取用户所有的收藏数(todo:点击收藏暂时没写)
+        tags = Tags.objects.filter(user_id=bloger.id).values("title").annotate(c=Count("id")).values("c",
+                                                                                                     "title")  # 获取当前查询的用户的所有的标签信息
+
+        # 查询出的所有文章的按照年月归档
         date_list = Topics.objects.filter(user__username=username).extra(
             select={"y_m_date": "DATE_FORMAT(FROM_UNIXTIME(create_time),'%%Y-%%m')"}).values(
             "y_m_date").annotate(c=Count("id")).values("y_m_date", "c")

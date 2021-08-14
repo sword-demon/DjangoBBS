@@ -16,6 +16,9 @@ class BaseView(View):
 
 
 class UserCenter(BaseView):
+    """
+    个人中心
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -36,6 +39,9 @@ class UserCenter(BaseView):
 
 
 class UserProfile(UserCenter):
+    """
+    个人资料
+    """
 
     @method_decorator(check_login, name='get')
     def get(self, request):
