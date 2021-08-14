@@ -131,6 +131,7 @@ MEDIA_URL = '/media/'
 # 富文本文件上传地址  相对地址  相对于media的目录
 CKEDITOR_UPLOAD_PATH = 'topic_images'
 
+# 富文本配置
 CKEDITOR_CONFIGS = {
     'default': {
         'width': 'auto',
