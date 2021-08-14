@@ -68,6 +68,9 @@ class MyBlog(View):
 
 
 class CreateTopic(View):
+    """
+    创建帖子
+    """
 
     @method_decorator(check_login, name='get')
     def get(self, request):
@@ -80,7 +83,9 @@ class CreateTopic(View):
         tags = request.POST.get("tags")
         tags_list = tags.split(",")
         if create_topic_form.is_valid():
+            # 开启事务
             with transaction.atomic():
+                # 不会将表单数据存储到数据库，返回一个当前对象，可以添加表单意外的额外的数据在一起存储
                 new_record = create_topic_form.save(commit=False)
                 new_record.user = request.user
                 new_record.create_time = time.time()
@@ -98,14 +103,16 @@ class CreateTopic(View):
             return Show.fail(create_topic_form.errors)
 
 
+def like_or_hate(request, topic_id, is_like=True):
+    return Likes.objects.create(topic_id=topic_id, user_id=request.user.id, is_like=is_like)
+
+
 @check_login
 def like(request):
     if request.method == "POST":
         topic_id = request.POST.get("topic_id")
-        user_id = request.user.id
-        is_like = 1
-        like = Likes.objects.create(topic_id=topic_id, user_id=user_id, is_like=is_like)
-        if like.id > 0:
+        like = like_or_hate(request, topic_id)
+        if like:
             return Show.success("点赞成功")
         else:
             return Show.fail("网络异常")
@@ -117,10 +124,8 @@ def like(request):
 def hate(request):
     if request.method == "POST":
         topic_id = request.POST.get("topic_id")
-        user_id = request.user.id
-        is_like = 0
-        like = Likes.objects.create(topic_id=topic_id, user_id=user_id, is_like=is_like)
-        if like.id > 0:
+        like = like_or_hate(request, topic_id, False)
+        if like:
             return Show.success("踩成功")
         else:
             return Show.fail("网络异常")
